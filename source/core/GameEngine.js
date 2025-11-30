@@ -3,8 +3,8 @@
  * GAMEENGINE.JS
  * ============================================
  * 
- * Game Engine ch�nh - Qu?n l� game loop, scene, renderer
- * Entry point cho t?t c? c�c h? th?ng game
+ * Game Engine chính - Quản lý game loop, scene, renderer
+ * Entry point cho tất cả các hệ thống game
  */
 
 import * as THREE from 'three';
@@ -30,18 +30,18 @@ export class GameEngine {
         this.lastTime = 0;
         this.deltaTime = 0;
         
-        // Scene references (s? ???c kh?i t?o sau)
+        // Scene references (sẽ được khởi tạo sau)
         this.currentSceneInstance = null;
     }
 
     /**
-     * Kh?i t?o game engine
+     * Khởi tạo game engine
      * TODO: Implement initialization
-     * - T?o Three.js Scene
-     * - Kh?i t?o Camera
-     * - T?o WebGL Renderer v?i antialias
-     * - Setup renderer size v� pixel ratio
-     * - Append renderer DOM v�o body
+     * - Tạo Three.js Scene
+     * - Khởi tạo Camera
+     * - Tạo WebGL Renderer với antialias
+     * - Setup renderer size và pixel ratio
+     * - Append renderer DOM vào body
      * - Setup window resize handler
      */
     init() {
@@ -70,7 +70,7 @@ export class GameEngine {
      * TODO: Implement state change handlers
      */
     setupStateListeners() {
-        // TODO: Listen to state changes v� load scene t??ng ?ng
+        // TODO: Listen to state changes và load scene tương ứng
         // this.stateManager.onStateChange(GameState.MAIN_MENU, () => {
         //     this.loadScene('mainMenu');
         // });
@@ -82,22 +82,22 @@ export class GameEngine {
         // this.stateManager.onStateChange(GameState.GAMEPLAY, (data) => {
         //     this.loadScene('gameplay', data);
         // });
-        // ... c�c state kh�c
+        // ... các state khác
     }
 
     /**
-     * Load scene m?i
+     * Load scene mới
      * @param {string} sceneName 
      * @param {object} data 
      * TODO: Implement scene loading
      */
     loadScene(sceneName, data = {}) {
-        // TODO: Cleanup scene c? n?u c�
+        // TODO: Cleanup scene cũ nếu có
         // if (this.currentSceneInstance) {
         //     this.currentSceneInstance.cleanup();
         // }
         
-        // TODO: Get scene instance t? stateManager
+        // TODO: Get scene instance từ stateManager
         // const sceneInstance = this.stateManager.getScene(sceneName);
         // if (sceneInstance) {
         //     this.currentSceneInstance = sceneInstance;
@@ -106,7 +106,7 @@ export class GameEngine {
     }
 
     /**
-     * B?t ??u game loop
+     * Bắt đầu game loop
      * TODO: Implement game loop
      */
     start() {
@@ -120,7 +120,7 @@ export class GameEngine {
     }
 
     /**
-     * Game loop ch�nh
+     * Game loop chính
      * TODO: Implement animation loop
      */
     animate() {
@@ -145,14 +145,14 @@ export class GameEngine {
     }
 
     /**
-     * D?ng game loop
+     * Dừng game loop
      */
     stop() {
         this.isRunning = false;
     }
 
     /**
-     * X? l� window resize
+     * Xử lý window resize
      * TODO: Implement resize handler
      */
     handleResize() {
@@ -164,14 +164,14 @@ export class GameEngine {
         //     this.renderer.setSize(window.innerWidth, window.innerHeight);
         // }
         
-        // TODO: Notify current scene v? resize
+        // TODO: Notify current scene về resize
         // if (this.currentSceneInstance && this.currentSceneInstance.onResize) {
         //     this.currentSceneInstance.onResize();
         // }
     }
 
     /**
-     * Cleanup khi game k?t th�c
+     * Cleanup khi game kết thúc
      */
     cleanup() {
         this.stop();

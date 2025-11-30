@@ -4,8 +4,8 @@
  * ============================================
  * 
  * Scene cho Level Selection
- * Hi?n th?: Danh s�ch c�c level, level ?� m? kh�a/ch?a m?
- * X? l�: Click v�o level ?? b?t ??u gameplay
+ * Hiển thị: Danh sách các level, level đã mở khóa/chưa mở
+ * Xử lý: Click vào level để bắt đầu gameplay
  */
 
 import { BaseScene } from './BaseScene.js';
@@ -20,18 +20,18 @@ export class LevelSelectScene extends BaseScene {
     }
 
     /**
-     * Kh?i t?o Level Select Scene
+     * Khởi tạo Level Select Scene
      * TODO: Implement initialization
-     * - Load danh s�ch levels t? DataManager
-     * - Hi?n th? c�c level cards
-     * - Hi?n th? lock/unlock status
-     * - Hi?n th? stars/rating cho m?i level
-     * - Hi?n th? best score cho m?i level
+     * - Load danh sách levels từ DataManager
+     * - Hiển thị các level cards
+     * - Hiển thị lock/unlock status
+     * - Hiển thị stars/rating cho mỗi level
+     * - Hiển thị best score cho mỗi level
      */
     init(scene, camera, data = {}) {
         super.init(scene, camera, data);
         
-        // TODO: Get unlocked levels t? DataManager
+        // TODO: Get unlocked levels từ DataManager
         // const unlockedLevels = this.gameEngine.getDataManager().data.unlockedLevels;
         
         // TODO: Create level selection UI
@@ -42,14 +42,14 @@ export class LevelSelectScene extends BaseScene {
     }
 
     /**
-     * T?o UI cho level selection
+     * Tạo UI cho level selection
      * TODO: Implement level cards creation
-     * - T?o card cho m?i level (1-10 ho?c nhi?u h?n)
-     * - Hi?n th? level number
-     * - Hi?n th? lock icon n?u ch?a m?
-     * - Hi?n th? stars (1-3) n?u ?� ho�n th�nh
-     * - Hi?n th? best score
-     * - Preview image c?a level
+     * - Tạo card cho mỗi level (1-10 hoặc nhiều hơn)
+     * - Hiển thị level number
+     * - Hiển thị lock icon nếu chưa mở
+     * - Hiển thị stars (1-3) nếu đã hoàn thành
+     * - Hiển thị best score
+     * - Preview image của level
      */
     createLevelSelection() {
         // TODO: Create level cards
@@ -60,13 +60,13 @@ export class LevelSelectScene extends BaseScene {
     }
 
     /**
-     * T?o card cho m?t level
+     * Tạo card cho một level
      * @param {number} levelNumber 
      * @param {boolean} isUnlocked 
      * TODO: Implement level card creation
      */
     createLevelCard(levelNumber, isUnlocked) {
-        // TODO: Create card element v?i:
+        // TODO: Create card element với:
         // - Level number
         // - Lock/unlock status
         // - Stars rating
@@ -75,7 +75,7 @@ export class LevelSelectScene extends BaseScene {
     }
 
     /**
-     * X? l� khi click v�o level
+     * Xử lý khi click vào level
      * @param {number} levelNumber 
      * TODO: Implement level selection
      */
@@ -86,7 +86,7 @@ export class LevelSelectScene extends BaseScene {
         //     return;
         // }
         
-        // TODO: Start gameplay v?i level ???c ch?n
+        // TODO: Start gameplay với level được chọn
         // this.gameEngine.getStateManager().changeState(GameState.GAMEPLAY, {
         //     level: levelNumber
         // });

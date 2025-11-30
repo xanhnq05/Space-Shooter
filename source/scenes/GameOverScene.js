@@ -4,8 +4,8 @@
  * ============================================
  * 
  * Scene cho Game Over / Victory
- * Hi?n th?: Final score, stats, stars rating, buttons (Play Again, Main Menu)
- * X? l�: T�nh to�n rating, hi?n th? achievements
+ * Hiển thị: Final score, stats, stars rating, buttons (Play Again, Main Menu)
+ * Xử lý: Tính toán rating, hiển thị achievements
  */
 
 import { BaseScene } from './BaseScene.js';
@@ -19,14 +19,14 @@ export class GameOverScene extends BaseScene {
     }
 
     /**
-     * Kh?i t?o Game Over Scene
+     * Khởi tạo Game Over Scene
      * @param {object} data - { score, level, enemiesKilled, victory }
      * TODO: Implement initialization
-     * - Hi?n th? final score
-     * - Hi?n th? stats (level reached, enemies killed, time played)
-     * - T�nh to�n v� hi?n th? stars (1-3)
-     * - Hi?n th? "Game Over" ho?c "Victory" t�y k?t qu?
-     * - Hi?n th? buttons: Play Again, Main Menu, Share
+     * - Hiển thị final score
+     * - Hiển thị stats (level reached, enemies killed, time played)
+     * - Tính toán và hiển thị stars (1-3)
+     * - Hiển thị "Game Over" hoặc "Victory" tùy kết quả
+     * - Hiển thị buttons: Play Again, Main Menu, Share
      */
     init(scene, camera, data = {}) {
         super.init(scene, camera, data);
@@ -48,14 +48,14 @@ export class GameOverScene extends BaseScene {
         // TODO: Setup event listeners
         // this.setupEventListeners();
         
-        // TODO: Show achievements n?u c�
+        // TODO: Show achievements nếu có
         // this.checkAchievements();
     }
 
     /**
-     * T�nh to�n s? sao (1-3)
+     * Tính toán số sao (1-3)
      * TODO: Implement star calculation
-     * D?a tr�n: Score, level reached, enemies killed
+     * Dựa trên: Score, level reached, enemies killed
      * @returns {number} 1-3 stars
      */
     calculateStars() {
@@ -69,12 +69,12 @@ export class GameOverScene extends BaseScene {
     }
 
     /**
-     * T?o UI cho game over
+     * Tạo UI cho game over
      * TODO: Implement UI creation
      */
     createGameOverUI() {
-        // TODO: Create UI v?i:
-        // - Title: "GAME OVER" ho?c "VICTORY"
+        // TODO: Create UI với:
+        // - Title: "GAME OVER" hoặc "VICTORY"
         // - Final score display
         // - Stats display (level, kills, time)
         // - Stars display (1-3 stars)
@@ -82,7 +82,7 @@ export class GameOverScene extends BaseScene {
     }
 
     /**
-     * Ki?m tra achievements
+     * Kiểm tra achievements
      * TODO: Implement achievement checking
      */
     checkAchievements() {
@@ -95,18 +95,18 @@ export class GameOverScene extends BaseScene {
     }
 
     /**
-     * X? l� Play Again
+     * Xử lý Play Again
      * TODO: Implement play again
      */
     playAgain() {
-        // TODO: Restart gameplay v?i c�ng level
+        // TODO: Restart gameplay với cùng level
         // this.gameEngine.getStateManager().changeState(GameState.GAMEPLAY, {
         //     level: this.gameStats.level
         // });
     }
 
     /**
-     * X? l� Main Menu
+     * Xử lý Main Menu
      * TODO: Implement return to menu
      */
     goToMainMenu() {

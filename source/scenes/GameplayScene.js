@@ -3,9 +3,9 @@
  * GAMEPLAYSCENE.JS
  * ============================================
  * 
- * Scene ch�nh cho gameplay
- * Qu?n l�: Player, Enemies, Boss, Bullets, Collisions, Scoring
- * X? l�: Game logic, spawn enemies, boss fights, game over conditions
+ * Scene chính cho gameplay
+ * Quản lý: Player, Enemies, Boss, Bullets, Collisions, Scoring
+ * Xử lý: Game logic, spawn enemies, boss fights, game over conditions
  */
 
 import { BaseScene } from './BaseScene.js';
@@ -37,11 +37,11 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * Kh?i t?o Gameplay Scene
+     * Khởi tạo Gameplay Scene
      * @param {object} data - { level: number }
      * TODO: Implement initialization
      * - Load level data
-     * - Create player v?i stats t? upgrades
+     * - Create player với stats từ upgrades
      * - Create background
      * - Setup HUD
      * - Initialize spawn timers
@@ -55,7 +55,7 @@ export class GameplayScene extends BaseScene {
         // TODO: Create background
         // this.createBackground();
         
-        // TODO: Create player v?i upgrades
+        // TODO: Create player với upgrades
         // this.createPlayer();
         
         // TODO: Setup HUD
@@ -67,10 +67,10 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * T?o player
+     * Tạo player
      * TODO: Implement player creation
      * - Load player ship texture
-     * - Apply upgrades t? DataManager
+     * - Apply upgrades từ DataManager
      * - Set position, health, speed
      */
     createPlayer() {
@@ -78,7 +78,7 @@ export class GameplayScene extends BaseScene {
         // const playerData = this.gameEngine.getDataManager().data.playerData;
         // const upgrades = playerData.upgrades || {};
         
-        // TODO: Create player object v?i stats
+        // TODO: Create player object với stats
         // this.player = new Player(this.scene, {
         //     health: GameConfig.PLAYER.START_HEALTH * (1 + upgrades.health * 0.1),
         //     speed: GameConfig.PLAYER.SPEED * (1 + upgrades.speed * 0.1),
@@ -88,7 +88,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * T?o background
+     * Tạo background
      * TODO: Implement background creation
      */
     createBackground() {
@@ -102,23 +102,23 @@ export class GameplayScene extends BaseScene {
      * - Score display
      * - Health bar
      * - Level display
-     * - Boss health bar (khi c� boss)
-     * - Boss icon (khi boss s?p xu?t hi?n)
+     * - Boss health bar (khi có boss)
+     * - Boss icon (khi boss sắp xuất hiện)
      */
     setupHUD() {
         // TODO: Setup HUD elements
         // - Score counter
-        // - Health bar v?i current/max health
+        // - Health bar với current/max health
         // - Level indicator
-        // - Boss warning icon (khi boss s?p spawn)
+        // - Boss warning icon (khi boss sắp spawn)
     }
 
     /**
-     * Update gameplay m?i frame
+     * Update gameplay mỗi frame
      * TODO: Implement game loop logic
      * - Update player
      * - Spawn enemies theo timer
-     * - Spawn boss ? level nh?t ??nh
+     * - Spawn boss ở level nhất định
      * - Update all game objects
      * - Check collisions
      * - Update score
@@ -164,17 +164,17 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * X? l� spawn enemies
+     * Xử lý spawn enemies
      * TODO: Implement enemy spawning
      */
     handleEnemySpawning(deltaTime) {
         // TODO: Increase spawn timer
         // this.enemySpawnTimer += deltaTime;
         
-        // TODO: Calculate spawn interval (gi?m d?n theo level)
+        // TODO: Calculate spawn interval (giảm dần theo level)
         // const spawnInterval = GameConfig.ENEMY.SPAWN_INTERVAL / (1 + this.currentLevel * 0.1);
         
-        // TODO: Spawn enemy khi ?? th?i gian
+        // TODO: Spawn enemy khi đủ thời gian
         // if (this.enemySpawnTimer >= spawnInterval) {
         //     this.spawnEnemy();
         //     this.enemySpawnTimer = 0;
@@ -182,13 +182,13 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * Spawn m?t enemy
+     * Spawn một enemy
      * TODO: Implement enemy spawn
      */
     spawnEnemy() {
         // TODO: Random x position
         // const x = (Math.random() - 0.5) * 18; // -9 to 9
-        // const y = 12; // Spawn t? tr�n
+        // const y = 12; // Spawn từ trên
         
         // TODO: Random enemy type
         // const type = Math.floor(Math.random() * 3) + 1;
@@ -199,11 +199,11 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * X? l� spawn boss
+     * Xử lý spawn boss
      * TODO: Implement boss spawning
      */
     handleBossSpawning() {
-        // TODO: Check if should spawn boss (m?i 5 levels)
+        // TODO: Check if should spawn boss (mỗi 5 levels)
         // if (this.currentLevel % GameConfig.BOSS.SPAWN_AT_LEVEL === 0 && !this.boss) {
         //     this.spawnBoss();
         // }
@@ -227,7 +227,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * Ki?m tra collisions
+     * Kiểm tra collisions
      * TODO: Implement collision detection
      * - Player bullets vs Enemies
      * - Player bullets vs Boss
@@ -268,7 +268,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * X? l� khi enemy b? ti�u di?t
+     * Xử lý khi enemy bị tiêu diệt
      * @param {object} enemy 
      * TODO: Implement enemy kill logic
      */
@@ -288,7 +288,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * Th�m ?i?m
+     * Thêm điểm
      * @param {number} points 
      * TODO: Implement scoring
      */
@@ -307,7 +307,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * X? l� khi l�n level
+     * Xử lý khi lên level
      * @param {number} newLevel 
      * TODO: Implement level up logic
      */
@@ -323,7 +323,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * Ki?m tra game over
+     * Kiểm tra game over
      * TODO: Implement game over check
      */
     checkGameOver() {
@@ -339,7 +339,7 @@ export class GameplayScene extends BaseScene {
     }
 
     /**
-     * X? l� game over
+     * Xử lý game over
      * @param {boolean} victory 
      * TODO: Implement game over logic
      */
@@ -347,7 +347,7 @@ export class GameplayScene extends BaseScene {
         // TODO: Save high score
         // this.gameEngine.getDataManager().saveHighScore(this.score);
         
-        // TODO: Unlock next level n?u victory
+        // TODO: Unlock next level nếu victory
         // if (victory) {
         //     this.gameEngine.getDataManager().unlockLevel(this.currentLevel + 1);
         // }
@@ -359,7 +359,7 @@ export class GameplayScene extends BaseScene {
         // playerData.totalScore += this.score;
         // this.gameEngine.getDataManager().saveAll();
         
-        // TODO: Chuy?n ??n GameOverScene
+        // TODO: Chuyển đến GameOverScene
         // this.gameEngine.getStateManager().changeState(GameState.GAME_OVER, {
         //     score: this.score,
         //     level: this.currentLevel,
@@ -394,7 +394,7 @@ export class GameplayScene extends BaseScene {
         // TODO: Update score display
         // TODO: Update health bar
         // TODO: Update level display
-        // TODO: Update boss health bar n?u c� boss
+        // TODO: Update boss health bar nếu có boss
     }
 
     cleanup() {

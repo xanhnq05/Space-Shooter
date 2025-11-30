@@ -3,8 +3,8 @@
  * HUD.JS
  * ============================================
  * 
- * Qu?n l� HUD (Heads-Up Display) trong gameplay
- * Hi?n th?: Score, Health, Level, Boss Health, Boss Icon
+ * Quản lý HUD (Heads-Up Display) trong gameplay
+ * Hiển thị: Score, Health, Level, Boss Health, Boss Icon
  */
 
 export class HUD {
@@ -20,9 +20,9 @@ export class HUD {
     }
 
     /**
-     * Kh?i t?o HUD
+     * Khởi tạo HUD
      * TODO: Implement HUD initialization
-     * - Get references ??n HUD elements t? DOM
+     * - Get references đến HUD elements từ DOM
      * - Setup initial values
      */
     init() {
@@ -41,7 +41,7 @@ export class HUD {
      * TODO: Implement score update
      */
     updateScore(score) {
-        // TODO: Update score display v?i animation
+        // TODO: Update score display với animation
         // if (this.elements.score) {
         //     this.elements.score.textContent = score.toLocaleString();
         //     // Add pulse animation
@@ -55,7 +55,7 @@ export class HUD {
      * TODO: Implement health update
      */
     updateHealth(current, max) {
-        // TODO: Update health bar v� text
+        // TODO: Update health bar và text
         // const percentage = (current / max) * 100;
         // if (this.elements.healthBar) {
         //     this.elements.healthBar.style.width = percentage + '%';
@@ -78,11 +78,11 @@ export class HUD {
     }
 
     /**
-     * Hi?n th? boss icon
+     * Hiển thị boss icon
      * TODO: Implement boss icon display
      */
     showBossIcon() {
-        // TODO: Show boss icon v?i animation
+        // TODO: Show boss icon với animation
         // if (this.elements.bossIcon) {
         //     this.elements.bossIcon.classList.remove('hidden');
         //     this.elements.bossIcon.classList.add('pulse');
@@ -90,7 +90,7 @@ export class HUD {
     }
 
     /**
-     * ?n boss icon
+     * Ẩn boss icon
      * TODO: Implement hide boss icon
      */
     hideBossIcon() {
@@ -107,7 +107,7 @@ export class HUD {
      * TODO: Implement boss health update
      */
     updateBossHealth(current, max) {
-        // TODO: Show v� update boss health bar
+        // TODO: Show và update boss health bar
         // if (this.elements.bossHealthBar) {
         //     const percentage = (current / max) * 100;
         //     this.elements.bossHealthBar.style.width = percentage + '%';
@@ -116,7 +116,7 @@ export class HUD {
     }
 
     /**
-     * ?n boss health bar
+     * Ẩn boss health bar
      * TODO: Implement hide boss health
      */
     hideBossHealth() {

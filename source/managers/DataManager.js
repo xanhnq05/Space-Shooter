@@ -3,12 +3,12 @@
  * DATAMANAGER.JS
  * ============================================
  * 
- * Qu?n l� l?u tr? v� t?i d? li?u game
- * S? d?ng localStorage ?? l?u:
- * - Player progress (level ?� m? kh�a, ?i?m cao nh?t)
- * - Settings (�m l??ng, ?? kh�)
- * - Shop purchases (items ?� mua)
- * - Player stats (t?ng ?i?m, s? l?n ch?i...)
+ * Quản lý lưu trữ và tải dữ liệu game
+ * Sử dụng localStorage để lưu:
+ * - Player progress (level đã mở khóa, điểm cao nhất)
+ * - Settings (âm lượng, độ khó)
+ * - Shop purchases (items đã mua)
+ * - Player stats (tổng điểm, số lần chơi...)
  */
 
 import { StorageKeys } from '../utils/Constants.js';
@@ -19,7 +19,7 @@ export class DataManager {
             playerData: null,
             settings: null,
             highScore: 0,
-            unlockedLevels: [1], // Level 1 m?c ??nh ?� m?
+            unlockedLevels: [1], // Level 1 mặc định đã mở
             purchasedItems: []
         };
         
@@ -27,17 +27,17 @@ export class DataManager {
     }
 
     /**
-     * T?i t?t c? d? li?u t? localStorage
-     * TODO: Implement load t? localStorage
-     * - Load playerData t? StorageKeys.PLAYER_DATA
-     * - Load settings t? StorageKeys.SETTINGS
-     * - Load highScore t? StorageKeys.HIGH_SCORE
-     * - Load unlockedLevels t? StorageKeys.UNLOCKED_LEVELS
-     * - Load purchasedItems t? StorageKeys.PURCHASED_ITEMS
-     * - X? l� tr??ng h?p d? li?u null (l?n ??u ch?i)
+     * Tải tất cả dữ liệu từ localStorage
+     * TODO: Implement load từ localStorage
+     * - Load playerData từ StorageKeys.PLAYER_DATA
+     * - Load settings từ StorageKeys.SETTINGS
+     * - Load highScore từ StorageKeys.HIGH_SCORE
+     * - Load unlockedLevels từ StorageKeys.UNLOCKED_LEVELS
+     * - Load purchasedItems từ StorageKeys.PURCHASED_ITEMS
+     * - Xử lý trường hợp dữ liệu null (lần đầu chơi)
      */
     loadAll() {
-        // TODO: Load t? localStorage
+        // TODO: Load từ localStorage
         // try {
         //     const playerDataStr = localStorage.getItem(StorageKeys.PLAYER_DATA);
         //     this.data.playerData = playerDataStr ? JSON.parse(playerDataStr) : this.getDefaultPlayerData();
@@ -59,11 +59,11 @@ export class DataManager {
     }
 
     /**
-     * L?u t?t c? d? li?u v�o localStorage
-     * TODO: Implement save v�o localStorage
+     * Lưu tất cả dữ liệu vào localStorage
+     * TODO: Implement save vào localStorage
      */
     saveAll() {
-        // TODO: Save t?t c? v�o localStorage
+        // TODO: Save tất cả vào localStorage
         // try {
         //     localStorage.setItem(StorageKeys.PLAYER_DATA, JSON.stringify(this.data.playerData));
         //     localStorage.setItem(StorageKeys.SETTINGS, JSON.stringify(this.data.settings));
@@ -76,7 +76,7 @@ export class DataManager {
     }
 
     /**
-     * L?u ?i?m cao nh?t
+     * Lưu điểm cao nhất
      * @param {number} score 
      */
     saveHighScore(score) {
@@ -87,7 +87,7 @@ export class DataManager {
     }
 
     /**
-     * M? kh�a level m?i
+     * Mở khóa level mới
      * @param {number} level 
      */
     unlockLevel(level) {
@@ -99,7 +99,7 @@ export class DataManager {
     }
 
     /**
-     * Ki?m tra level ?� ???c m? kh�a ch?a
+     * Kiểm tra level đã được mở khóa chưa
      * @param {number} level 
      * @returns {boolean}
      */
@@ -108,7 +108,7 @@ export class DataManager {
     }
 
     /**
-     * L?u item ?� mua trong shop
+     * Lưu item đã mua trong shop
      * @param {string} itemId 
      */
     addPurchasedItem(itemId) {
@@ -119,7 +119,7 @@ export class DataManager {
     }
 
     /**
-     * Ki?m tra item ?� mua ch?a
+     * Kiểm tra item đã mua chưa
      * @param {string} itemId 
      * @returns {boolean}
      */
@@ -128,7 +128,7 @@ export class DataManager {
     }
 
     /**
-     * L?u settings
+     * Lưu settings
      * @param {object} settings 
      */
     saveSettings(settings) {
@@ -137,7 +137,7 @@ export class DataManager {
     }
 
     /**
-     * L?y settings
+     * Lấy settings
      * @returns {object}
      */
     getSettings() {
@@ -145,7 +145,7 @@ export class DataManager {
     }
 
     /**
-     * L?y d? li?u player m?c ??nh
+     * Lấy dữ liệu player mặc định
      * TODO: Define default player data structure
      * @returns {object}
      */
@@ -155,14 +155,14 @@ export class DataManager {
             totalGames: 0,
             totalKills: 0,
             highestLevel: 1,
-            coins: 0, // Ti?n trong game ?? mua items
+            coins: 0, // Tiền trong game để mua items
             shipLevel: 1,
             upgrades: {}
         };
     }
 
     /**
-     * L?y settings m?c ??nh
+     * Lấy settings mặc định
      * TODO: Define default settings structure
      * @returns {object}
      */
@@ -177,7 +177,7 @@ export class DataManager {
     }
 
     /**
-     * Reset v? m?c ??nh
+     * Reset về mặc định
      */
     resetToDefaults() {
         this.data = {
@@ -191,7 +191,7 @@ export class DataManager {
     }
 
     /**
-     * X�a t?t c? d? li?u (reset game)
+     * Xóa tất cả dữ liệu (reset game)
      */
     clearAll() {
         localStorage.removeItem(StorageKeys.PLAYER_DATA);

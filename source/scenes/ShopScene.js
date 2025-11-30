@@ -4,8 +4,8 @@
  * ============================================
  * 
  * Scene cho Shop
- * Hi?n th?: Danh s�ch items c� th? mua (ship upgrades, powerups, remove ads...)
- * X? l�: Mua items, hi?n th? gi�, ki?m tra ?� mua ch?a
+ * Hiển thị: Danh sách items có thể mua (ship upgrades, powerups, remove ads...)
+ * Xử lý: Mua items, hiển thị giá, kiểm tra đã mua chưa
  */
 
 import { BaseScene } from './BaseScene.js';
@@ -20,12 +20,12 @@ export class ShopScene extends BaseScene {
     }
 
     /**
-     * Kh?i t?o Shop Scene
+     * Khởi tạo Shop Scene
      * TODO: Implement initialization
-     * - Load player coins t? DataManager
-     * - Hi?n th? danh s�ch items
-     * - Hi?n th? items ?� mua (disable ho?c mark as owned)
-     * - Hi?n th? gi� v� s? coins hi?n c�
+     * - Load player coins từ DataManager
+     * - Hiển thị danh sách items
+     * - Hiển thị items đã mua (disable hoặc mark as owned)
+     * - Hiển thị giá và số coins hiện có
      */
     init(scene, camera, data = {}) {
         super.init(scene, camera, data);
@@ -42,12 +42,12 @@ export class ShopScene extends BaseScene {
     }
 
     /**
-     * T?o UI cho shop
+     * Tạo UI cho shop
      * TODO: Implement shop UI creation
-     * - Hi?n th? coins counter
-     * - T?o item cards cho m?i item trong ShopItems
-     * - Hi?n th? gi�, icon, description
-     * - Mark items ?� mua
+     * - Hiển thị coins counter
+     * - Tạo item cards cho mỗi item trong ShopItems
+     * - Hiển thị giá, icon, description
+     * - Mark items đã mua
      */
     createShopUI() {
         // TODO: Create shop items display
@@ -58,22 +58,22 @@ export class ShopScene extends BaseScene {
     }
 
     /**
-     * T?o card cho m?t shop item
+     * Tạo card cho một shop item
      * @param {object} item 
      * @param {boolean} isPurchased 
      * TODO: Implement item card creation
      */
     createShopItemCard(item, isPurchased) {
-        // TODO: Create card v?i:
+        // TODO: Create card với:
         // - Item icon
         // - Item name
         // - Item description
-        // - Price (ho?c "Owned" n?u ?� mua)
-        // - Buy button (disabled n?u ?� mua ho?c kh�ng ?? coins)
+        // - Price (hoặc "Owned" nếu đã mua)
+        // - Buy button (disabled nếu đã mua hoặc không đủ coins)
     }
 
     /**
-     * X? l� mua item
+     * Xử lý mua item
      * @param {string} itemId 
      * TODO: Implement purchase logic
      */
@@ -101,7 +101,7 @@ export class ShopScene extends BaseScene {
         // TODO: Mark as purchased
         // this.gameEngine.getDataManager().addPurchasedItem(itemId);
         
-        // TODO: Apply item effect (n?u l� upgrade)
+        // TODO: Apply item effect (nếu là upgrade)
         // this.applyItemEffect(itemId);
         
         // TODO: Save data
@@ -112,7 +112,7 @@ export class ShopScene extends BaseScene {
     }
 
     /**
-     * �p d?ng effect c?a item ?� mua
+     * Áp dụng effect của item đã mua
      * @param {string} itemId 
      * TODO: Implement item effects
      */

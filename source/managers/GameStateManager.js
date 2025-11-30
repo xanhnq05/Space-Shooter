@@ -3,9 +3,9 @@
  * GAMESTATEMANAGER.JS
  * ============================================
  * 
- * Qu?n l� c�c state c?a game
- * Chuy?n ??i gi?a c�c scene: Menu -> Level Select -> Gameplay -> Game Over
- * Qu?n l� lu?ng game logic
+ * Quản lý các state của game
+ * Chuyển đổi giữa các scene: Menu -> Level Select -> Gameplay -> Game Over
+ * Quản lý luồng game logic
  */
 
 import { GameState } from '../utils/Constants.js';
@@ -14,9 +14,9 @@ export class GameStateManager {
     constructor() {
         this.currentState = GameState.LOADING;
         this.previousState = null;
-        this.stateListeners = new Map(); // Callbacks khi state thay ??i
+        this.stateListeners = new Map(); // Callbacks khi state thay đổi
         
-        // Reference ??n c�c scene managers
+        // Reference đến các scene managers
         this.scenes = {
             mainMenu: null,
             levelSelect: null,
@@ -28,14 +28,14 @@ export class GameStateManager {
     }
 
     /**
-     * Chuy?n ??i state
-     * @param {string} newState - State m?i t? GameState constants
-     * @param {object} data - D? li?u truy?n v�o state m?i (optional)
+     * Chuyển đổi state
+     * @param {string} newState - State mới từ GameState constants
+     * @param {object} data - Dữ liệu truyền vào state mới (optional)
      * TODO: Implement state transition
-     * - Validate state h?p l?
-     * - L?u previousState
-     * - G?i exit callback c?a state c?
-     * - G?i enter callback c?a state m?i
+     * - Validate state hợp lệ
+     * - Lưu previousState
+     * - Gọi exit callback của state cũ
+     * - Gọi enter callback của state mới
      * - Trigger state change event
      */
     changeState(newState, data = {}) {
@@ -53,7 +53,7 @@ export class GameStateManager {
     }
 
     /**
-     * Th�m listener cho state change
+     * Thêm listener cho state change
      * @param {string} state 
      * @param {function} callback 
      */
@@ -65,7 +65,7 @@ export class GameStateManager {
     }
 
     /**
-     * Th�ng b�o state change cho c�c listeners
+     * Thông báo state change cho các listeners
      * @param {string} state 
      * @param {object} data 
      */
@@ -77,7 +77,7 @@ export class GameStateManager {
     }
 
     /**
-     * L?y state hi?n t?i
+     * Lấy state hiện tại
      * @returns {string}
      */
     getCurrentState() {
@@ -85,7 +85,7 @@ export class GameStateManager {
     }
 
     /**
-     * Ki?m tra c� ?ang ? state n�o ?� kh�ng
+     * Kiểm tra có đang ở state nào đó không
      * @param {string} state 
      * @returns {boolean}
      */
@@ -94,7 +94,7 @@ export class GameStateManager {
     }
 
     /**
-     * Quay l?i state tr??c ?�
+     * Quay lại state trước đó
      * TODO: Implement go back to previous state
      */
     goBack() {
@@ -105,7 +105,7 @@ export class GameStateManager {
     }
 
     /**
-     * ??ng k� scene manager
+     * Đăng ký scene manager
      * @param {string} sceneName 
      * @param {object} sceneInstance 
      */
@@ -114,7 +114,7 @@ export class GameStateManager {
     }
 
     /**
-     * L?y scene instance
+     * Lấy scene instance
      * @param {string} sceneName 
      * @returns {object}
      */
@@ -123,7 +123,7 @@ export class GameStateManager {
     }
 
     /**
-     * Pause game (t? gameplay)
+     * Pause game (từ gameplay)
      */
     pause() {
         if (this.currentState === GameState.GAMEPLAY) {
@@ -133,7 +133,7 @@ export class GameStateManager {
     }
 
     /**
-     * Resume game (t? paused)
+     * Resume game (từ paused)
      */
     resume() {
         if (this.currentState === GameState.PAUSED) {

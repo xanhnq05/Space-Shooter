@@ -4,8 +4,8 @@
  * ============================================
  * 
  * Scene cho Main Menu
- * Hi?n th?: Logo, n�t Play, Shop, Settings, Exit
- * X? l�: Click v�o c�c n�t ?? chuy?n scene
+ * Hiển thị: Logo, nút Play, Shop, Settings, Exit
+ * Xử lý: Click vào các nút để chuyển scene
  */
 
 import { BaseScene } from './BaseScene.js';
@@ -21,12 +21,12 @@ export class MainMenuScene extends BaseScene {
     }
 
     /**
-     * Kh?i t?o Main Menu Scene
+     * Khởi tạo Main Menu Scene
      * TODO: Implement initialization
-     * - Load background (c� th? l� static image ho?c animated)
+     * - Load background (có thể là static image hoặc animated)
      * - Setup UI elements (buttons)
-     * - Setup event listeners cho c�c n�t
-     * - Hi?n th? high score n?u c�
+     * - Setup event listeners cho các nút
+     * - Hiển thị high score nếu có
      */
     init(scene, camera, data = {}) {
         super.init(scene, camera, data);
@@ -42,11 +42,11 @@ export class MainMenuScene extends BaseScene {
     }
 
     /**
-     * T?o background cho menu
+     * Tạo background cho menu
      * TODO: Implement background creation
-     * - Load texture t? AssetPaths
-     * - T?o PlaneGeometry v?i k�ch th??c ph� h?p
-     * - C� th? th�m animation nh? (parallax, rotation...)
+     * - Load texture từ AssetPaths
+     * - Tạo PlaneGeometry với kích thước phù hợp
+     * - Có thể thêm animation nhẹ (parallax, rotation...)
      */
     createBackground() {
         // TODO: Load background texture
@@ -63,22 +63,22 @@ export class MainMenuScene extends BaseScene {
     /**
      * Setup UI elements
      * TODO: Implement UI setup
-     * - T?o c�c n�t: Play, Shop, Settings, Exit
-     * - Position c�c n�t tr�n m�n h�nh
-     * - Style buttons (c� th? d�ng CSS ho?c Three.js sprites)
+     * - Tạo các nút: Play, Shop, Settings, Exit
+     * - Position các nút trên màn hình
+     * - Style buttons (có thể dùng CSS hoặc Three.js sprites)
      */
     setupUI() {
         // TODO: Create UI buttons
-        // C� th? d�ng HTML overlay ho?c Three.js sprites
+        // Có thể dùng HTML overlay hoặc Three.js sprites
     }
 
     /**
      * Setup event listeners
      * TODO: Implement button click handlers
-     * - Play button -> chuy?n ??n LevelSelectScene
-     * - Shop button -> chuy?n ??n ShopScene
-     * - Settings button -> m? settings overlay
-     * - Exit button -> confirm v� exit
+     * - Play button -> chuyển đến LevelSelectScene
+     * - Shop button -> chuyển đến ShopScene
+     * - Settings button -> mở settings overlay
+     * - Exit button -> confirm và exit
      */
     setupEventListeners() {
         // TODO: Add click listeners
@@ -88,9 +88,9 @@ export class MainMenuScene extends BaseScene {
     }
 
     /**
-     * Update scene (n?u c� animation)
+     * Update scene (nếu có animation)
      * TODO: Implement update logic
-     * - Animate background n?u c?n
+     * - Animate background nếu cần
      * - Update UI animations
      */
     update(deltaTime) {

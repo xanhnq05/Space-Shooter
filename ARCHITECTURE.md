@@ -1,112 +1,112 @@
-# ?? Space Shooter Game - Architecture Documentation
+# 📋 Space Shooter Game - Architecture Documentation
 
-## ?? C?u tr�c th? m?c
+## 📁 Cấu trúc thư mục
 
 ```
 js/
-??? core/                    # Core systems
-?   ??? Camera.js           # Camera management (? ?� SETUP)
-?   ??? GameEngine.js       # Main game engine, game loop
-?   ??? SceneManager.js     # (Optional) Scene management
-?
-??? managers/               # Game managers
-?   ??? DataManager.js      # Save/Load data (localStorage)
-?   ??? GameStateManager.js # State management (menu, gameplay, etc.)
-?   ??? AudioManager.js     # (Future) Sound management
-?   ??? InputManager.js     # (Future) Input handling
-?
-??? scenes/                 # Game scenes
-?   ??? BaseScene.js        # Base class cho t?t c? scenes
-?   ??? MainMenuScene.js    # Main menu
-?   ??? LevelSelectScene.js # Level selection
-?   ??? ShopScene.js        # Shop ?? mua items
-?   ??? UpgradeScene.js     # Upgrade ship stats
-?   ??? GameplayScene.js    # Main gameplay
-?   ??? GameOverScene.js    # Game over / Victory
-?
-??? ui/                     # UI system
-?   ??? UIManager.js        # Qu?n l� t?t c? UI
-?   ??? HUD.js              # HUD trong gameplay
-?   ??? MenuUI.js           # (Future) Menu UI components
-?   ??? ShopUI.js           # (Future) Shop UI components
-?
-??? game/                   # Game objects (s? t?o sau)
-?   ??? Player.js           # Player ship
-?   ??? Enemy.js            # Enemy ships
-?   ??? Boss.js             # Boss enemies
-?   ??? Bullet.js           # Bullets
-?   ??? Background.js       # Scrolling background
-?
-??? data/                   # Data structures
-?   ??? GameData.js         # (Future) Game data structures
-?   ??? SaveData.js         # (Future) Save data format
-?
-??? utils/                  # Utilities
-?   ??? Constants.js        # Game constants, configs
-?   ??? Helpers.js          # Helper functions
-?
-??? main.js                 # Entry point
+├── core/                    # Core systems
+│   ├── Camera.js           # Camera management (Đã SETUP)
+│   ├── GameEngine.js       # Main game engine, game loop
+│   └── SceneManager.js     # (Optional) Scene management
+│
+├── managers/               # Game managers
+│   ├── DataManager.js      # Save/Load data (localStorage)
+│   ├── GameStateManager.js # State management (menu, gameplay, etc.)
+│   ├── AudioManager.js     # (Future) Sound management
+│   └── InputManager.js     # (Future) Input handling
+│
+├── scenes/                 # Game scenes
+│   ├── BaseScene.js        # Base class cho tất cả scenes
+│   ├── MainMenuScene.js    # Main menu
+│   ├── LevelSelectScene.js # Level selection
+│   ├── ShopScene.js        # Shop để mua items
+│   ├── UpgradeScene.js     # Upgrade ship stats
+│   ├── GameplayScene.js    # Main gameplay
+│   └── GameOverScene.js    # Game over / Victory
+│
+├── ui/                     # UI system
+│   ├── UIManager.js        # Quản lý tất cả UI
+│   ├── HUD.js              # HUD trong gameplay
+│   ├── MenuUI.js           # (Future) Menu UI components
+│   └── ShopUI.js           # (Future) Shop UI components
+│
+├── game/                   # Game objects (sẽ tạo sau)
+│   ├── Player.js           # Player ship
+│   ├── Enemy.js            # Enemy ships
+│   ├── Boss.js             # Boss enemies
+│   ├── Bullet.js           # Bullets
+│   └── Background.js       # Scrolling background
+│
+├── data/                   # Data structures
+│   ├── GameData.js         # (Future) Game data structures
+│   └── SaveData.js         # (Future) Save data format
+│
+├── utils/                  # Utilities
+│   ├── Constants.js        # Game constants, configs
+│   └── Helpers.js          # Helper functions
+│
+└── main.js                 # Entry point
 ```
 
-## ?? Lu?ng game (Game Flow)
+## 🔄 Luồng game (Game Flow)
 
 ```
 1. LOADING
-   ?
+   │
 2. MAIN_MENU
-   ??? Play ? LEVEL_SELECT
-   ??? Shop ? SHOP
-   ??? Upgrade ? UPGRADE
-   ??? Settings ? (Overlay)
-   ?
+   ├── Play → LEVEL_SELECT
+   ├── Shop → SHOP
+   ├── Upgrade → UPGRADE
+   └── Settings → (Overlay)
+   │
 3. LEVEL_SELECT
-   ??? Select Level ? GAMEPLAY
-   ?
+   └── Select Level → GAMEPLAY
+   │
 4. GAMEPLAY
-   ??? Pause ? PAUSED
-   ?   ??? Resume ? GAMEPLAY
-   ?   ??? Restart ? GAMEPLAY (restart)
-   ?   ??? Quit ? MAIN_MENU
-   ?
-   ??? Player Dies ? GAME_OVER
-   ??? Boss Defeated ? GAME_OVER (Victory)
-   ?
+   ├── Pause → PAUSED
+   │   ├── Resume → GAMEPLAY
+   │   ├── Restart → GAMEPLAY (restart)
+   │   └── Quit → MAIN_MENU
+   │
+   ├── Player Dies → GAME_OVER
+   └── Boss Defeated → GAME_OVER (Victory)
+   │
 5. GAME_OVER
-   ??? Play Again ? GAMEPLAY (same level)
-   ??? Main Menu ? MAIN_MENU
+   ├── Play Again → GAMEPLAY (same level)
+   └── Main Menu → MAIN_MENU
 ```
 
-## ?? Nhi?m v? t?ng file
+## 📝 Nhiệm vụ từng file
 
 ### Core Systems
 
-#### `Camera.js` ?
-- **Nhi?m v?**: Setup v� qu?n l� Three.js Camera
-- **?� implement**: Camera initialization v?i config t? Constants
+#### `Camera.js` ✅
+- **Nhiệm vụ**: Setup và quản lý Three.js Camera
+- **Đã implement**: Camera initialization với config từ Constants
 - **TODO**: Camera shake effects, dynamic positioning
 
 #### `GameEngine.js`
-- **Nhi?m v?**: 
-  - Kh?i t?o Three.js Scene, Renderer
-  - Qu?n l� game loop
+- **Nhiệm vụ**: 
+  - Khởi tạo Three.js Scene, Renderer
+  - Quản lý game loop
   - Load/unload scenes
   - Handle window resize
-- **TODO**: Implement t?t c? methods
+- **TODO**: Implement tất cả methods
 
 ### Managers
 
 #### `DataManager.js`
-- **Nhi?m v?**:
-  - L?u/Load player data (localStorage)
-  - Qu?n l� high scores
-  - Qu?n l� unlocked levels
-  - Qu?n l� purchased items
-  - Qu?n l� settings
+- **Nhiệm vụ**:
+  - Lưu/Load player data (localStorage)
+  - Quản lý high scores
+  - Quản lý unlocked levels
+  - Quản lý purchased items
+  - Quản lý settings
 - **TODO**: Implement localStorage operations
 
 #### `GameStateManager.js`
-- **Nhi?m v?**:
-  - Qu?n l� state transitions
+- **Nhiệm vụ**:
+  - Quản lý state transitions
   - Register scene instances
   - Handle state change callbacks
   - Pause/Resume logic
@@ -115,52 +115,52 @@ js/
 ### Scenes
 
 #### `BaseScene.js`
-- **Nhi?m v?**: Base class cho t?t c? scenes
+- **Nhiệm vụ**: Base class cho tất cả scenes
 - **Interface**: `init()`, `update()`, `cleanup()`, `onResize()`
 
 #### `MainMenuScene.js`
-- **Nhi?m v?**:
-  - Hi?n th? main menu UI
+- **Nhiệm vụ**:
+  - Hiển thị main menu UI
   - Handle button clicks (Play, Shop, Settings)
   - Show high score
 - **TODO**: Implement UI creation, event handlers
 
 #### `LevelSelectScene.js`
-- **Nhi?m v?**:
-  - Hi?n th? danh s�ch levels
+- **Nhiệm vụ**:
+  - Hiển thị danh sách levels
   - Show lock/unlock status
   - Show stars rating
-  - Start gameplay v?i level ???c ch?n
+  - Start gameplay với level được chọn
 - **TODO**: Implement level cards, selection logic
 
 #### `ShopScene.js`
-- **Nhi?m v?**:
-  - Hi?n th? shop items
+- **Nhiệm vụ**:
+  - Hiển thị shop items
   - Handle purchases
   - Check coins balance
   - Apply item effects
 - **TODO**: Implement shop UI, purchase logic
 
 #### `UpgradeScene.js`
-- **Nhi?m v?**:
-  - Hi?n th? upgrade options (damage, speed, health, fire rate)
-  - Show current level v� cost
+- **Nhiệm vụ**:
+  - Hiển thị upgrade options (damage, speed, health, fire rate)
+  - Show current level và cost
   - Handle upgrades
   - Calculate stat values
 - **TODO**: Implement upgrade UI, upgrade logic
 
 #### `GameplayScene.js`
-- **Nhi?m v?**:
-  - Qu?n l� player, enemies, boss
+- **Nhiệm vụ**:
+  - Quản lý player, enemies, boss
   - Spawn enemies theo timer
   - Handle collisions
   - Update score
   - Check game over conditions
-- **TODO**: Implement to�n b? gameplay logic
+- **TODO**: Implement toàn bộ gameplay logic
 
 #### `GameOverScene.js`
-- **Nhi?m v?**:
-  - Hi?n th? final score, stats
+- **Nhiệm vụ**:
+  - Hiển thị final score, stats
   - Calculate stars rating
   - Show Play Again, Main Menu buttons
 - **TODO**: Implement game over UI, rating calculation
@@ -168,30 +168,30 @@ js/
 ### UI System
 
 #### `UIManager.js`
-- **Nhi?m v?**:
-  - Qu?n l� t?t c? UI screens
+- **Nhiệm vụ**:
+  - Quản lý tất cả UI screens
   - Show/hide screens
   - Update HUD
   - Handle UI events
 - **TODO**: Implement screen management, HUD updates
 
 #### `HUD.js`
-- **Nhi?m v?**:
+- **Nhiệm vụ**:
   - Update score display
   - Update health bar
   - Update level display
-  - Show/hide boss icon v� health bar
+  - Show/hide boss icon và health bar
 - **TODO**: Implement HUD updates
 
 ### Utils
 
-#### `Constants.js` ?
-- **Nhi?m v?**: Ch?a t?t c? constants, configs
-- **?� implement**: Game states, asset paths, configs, scoring
+#### `Constants.js` ✅
+- **Nhiệm vụ**: Chứa tất cả constants, configs
+- **Đã implement**: Game states, asset paths, configs, scoring
 
-## ?? H? th?ng l?u d? li?u
+## 💾 Hệ thống lưu dữ liệu
 
-### Data ???c l?u (localStorage):
+### Data được lưu (localStorage):
 
 1. **Player Data** (`PLAYER_DATA`)
    - Total score
@@ -218,24 +218,24 @@ js/
 5. **Purchased Items** (`PURCHASED_ITEMS`)
    - Array of item IDs ['ship_upgrade', 'remove_ads'...]
 
-## ?? Gameplay Features
+## 🎮 Gameplay Features
 
 ### Player
-- Di chuy?n: WASD / Arrow keys
-- B?n: Space
+- Di chuyển: WASD / Arrow keys
+- Bắn: Space
 - Health system
 - Upgrades: damage, speed, health, fire rate
 
 ### Enemies
-- Spawn theo timer (t?ng d?n theo level)
-- Nhi?u lo?i enemy
-- Drop items khi b? ti�u di?t
+- Spawn theo timer (tăng dần theo level)
+- Nhiều loại enemy
+- Drop items khi bị tiêu diệt
 
 ### Boss
-- Xu?t hi?n m?i 5 levels
-- Health bar ri�ng
-- Warning icon tr??c khi spawn
-- Nhi?u attack patterns
+- Xuất hiện mỗi 5 levels
+- Health bar riêng
+- Warning icon trước khi spawn
+- Nhiều attack patterns
 
 ### Scoring
 - Enemy kill: 10 points
@@ -244,11 +244,11 @@ js/
 - Perfect clear: 500 points
 
 ### Level Progression
-- M?i 100 points = level up
-- Difficulty t?ng theo level
-- Boss spawn m?i 5 levels
+- Mỗi 100 points = level up
+- Difficulty tăng theo level
+- Boss spawn mỗi 5 levels
 
-## ?? UI Elements
+## 🖥️ UI Elements
 
 ### Main Menu
 - Logo
@@ -279,8 +279,8 @@ js/
 - Score (top-left)
 - Health bar (bottom-left)
 - Level (top-left)
-- Boss icon (top-right, khi boss s?p spawn)
-- Boss health bar (top, khi c� boss)
+- Boss icon (top-right, khi boss sắp spawn)
+- Boss health bar (top, khi có boss)
 - Pause button (top-right)
 
 ### Game Over
@@ -290,27 +290,27 @@ js/
 - Play Again button
 - Main Menu button
 
-## ?? Implementation Order
+## 📋 Implementation Order
 
-1. ? **Constants.js** - ??nh ngh?a constants
-2. ? **Camera.js** - Setup camera
-3. ? **GameEngine.js** - Core engine
-4. ? **DataManager.js** - Save/load system
-5. ? **GameStateManager.js** - State management
-6. ? **BaseScene.js** - Base scene class
-7. ? **MainMenuScene.js** - Main menu
-8. ? **UIManager.js** - UI system
-9. ? **GameplayScene.js** - Gameplay
-10. ? **LevelSelectScene.js** - Level selection
-11. ? **ShopScene.js** - Shop
-12. ? **UpgradeScene.js** - Upgrades
-13. ? **GameOverScene.js** - Game over
-14. ? **main.js** - Entry point v� wiring
+1. ✅ **Constants.js** - Định nghĩa constants
+2. ✅ **Camera.js** - Setup camera
+3. ✅ **GameEngine.js** - Core engine
+4. ✅ **DataManager.js** - Save/load system
+5. ✅ **GameStateManager.js** - State management
+6. ✅ **BaseScene.js** - Base scene class
+7. ✅ **MainMenuScene.js** - Main menu
+8. ✅ **UIManager.js** - UI system
+9. ✅ **GameplayScene.js** - Gameplay
+10. ✅ **LevelSelectScene.js** - Level selection
+11. ✅ **ShopScene.js** - Shop
+12. ✅ **UpgradeScene.js** - Upgrades
+13. ✅ **GameOverScene.js** - Game over
+14. ⏳ **main.js** - Entry point và wiring
 
-## ?? Notes
+## 📌 Notes
 
-- T?t c? files ?� c� structure v� comments chi ti?t
-- M?i file c� TODO comments cho ph?n c?n implement
-- Camera ?� ???c setup ho�n ch?nh
-- Constants ?� ???c ??nh ngh?a ??y ??
-- C?n implement c�c ph?n TODO ?? game ho?t ??ng
+- Tất cả files đã có structure và comments chi tiết
+- Mỗi file có TODO comments cho phần cần implement
+- Camera đã được setup hoàn chỉnh
+- Constants đã được định nghĩa đầy đủ
+- Cần implement các phần TODO để game hoạt động

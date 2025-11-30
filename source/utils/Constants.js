@@ -3,8 +3,8 @@
  * CONSTANTS.JS
  * ============================================
  * 
- * Ch?a t?t c? c�c h?ng s? ???c s? d?ng trong game
- * Bao g?m: Game states, paths, configs, scoring system
+ * Chứa tất cả các hằng số được sử dụng trong game
+ * Bao gồm: Game states, paths, configs, scoring system
  */
 
 // ============================================
@@ -83,7 +83,7 @@ export const GameConfig = {
     // Boss Settings
     BOSS: {
         HEALTH: 1000,
-        SPAWN_AT_LEVEL: 5, // Boss xu?t hi?n ? level 5
+        SPAWN_AT_LEVEL: 5, // Boss xuất hiện ở level 5
         ATTACK_PATTERNS: 3
     },
     
@@ -103,8 +103,8 @@ export const GameConfig = {
     
     // Level Progression
     LEVEL: {
-        SCORE_PER_LEVEL: 100, // C?n bao nhi�u ?i?m ?? l�n level
-        DIFFICULTY_MULTIPLIER: 1.2 // Nh�n ?? kh� m?i level
+        SCORE_PER_LEVEL: 100, // Cần bao nhiêu điểm để lên level
+        DIFFICULTY_MULTIPLIER: 1.2 // Nhân độ khó mỗi level
     }
 };
 
@@ -143,19 +143,19 @@ export const StorageKeys = {
 // ============================================
 export const Difficulty = {
     EASY: {
-        name: 'D?',
+        name: 'Dễ',
         enemySpeed: 0.8,
         enemySpawnRate: 1.5,
         playerHealth: 1.5
     },
     NORMAL: {
-        name: 'B�nh th??ng',
+        name: 'Bình thường',
         enemySpeed: 1.0,
         enemySpawnRate: 1.0,
         playerHealth: 1.0
     },
     HARD: {
-        name: 'Kh�',
+        name: 'Khó',
         enemySpeed: 1.5,
         enemySpawnRate: 0.7,
         playerHealth: 0.8
@@ -168,19 +168,19 @@ export const Difficulty = {
 export const ShopItems = {
     SHIP_UPGRADE: {
         id: 'ship_upgrade',
-        name: 'N�ng c?p t�u',
+        name: 'Nâng cấp tàu',
         price: 100,
         type: 'upgrade'
     },
     HEALTH_BOOST: {
         id: 'health_boost',
-        name: 'T?ng m�u',
+        name: 'Tăng máu',
         price: 50,
         type: 'powerup'
     },
     REMOVE_ADS: {
         id: 'remove_ads',
-        name: 'G? qu?ng c�o',
+        name: 'Gỡ quảng cáo',
         price: 500,
         type: 'premium'
     }

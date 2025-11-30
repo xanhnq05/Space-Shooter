@@ -3,8 +3,8 @@
  * CAMERA.JS
  * ============================================
  * 
- * Quan ly Camera cho Three.js game
- * Setup camera voi cac thong so toi uu cho game 2D/2.5D space shooter
+ * Quản lý Camera cho Three.js game
+ * Setup camera với các thông số tối ưu cho game 2D/2.5D space shooter
  */
 
 import * as THREE from 'three';
@@ -18,8 +18,8 @@ export class Camera {
     }
 
     /**
-     * Khoi tao Camera voi cau hinh tu Constants
-     * Camera da duoc setup hoan chinh
+     * Khởi tạo Camera với cấu hình từ Constants
+     * Camera đã được setup hoàn chỉnh
      */
     init() {
         const aspect = window.innerWidth / window.innerHeight;
@@ -42,7 +42,7 @@ export class Camera {
             GameConfig.CAMERA.LOOK_AT.z
         );
         
-        // Luu vi tri ban dau cho shake effect
+        // Lưu vị trí ban đầu cho shake effect
         this.originalPosition = this.camera.position.clone();
         
         this.initialized = true;
@@ -50,7 +50,7 @@ export class Camera {
     }
 
     /**
-     * Lay instance camera
+     * Lấy instance camera
      * @returns {THREE.PerspectiveCamera}
      */
     getCamera() {
@@ -61,8 +61,8 @@ export class Camera {
     }
 
     /**
-     * Xu ly khi window resize
-     * Camera tu dong dieu chinh aspect ratio
+     * Xử lý khi window resize
+     * Camera tự động điều chỉnh aspect ratio
      */
     handleResize() {
         if (this.camera) {
@@ -72,7 +72,7 @@ export class Camera {
     }
 
     /**
-     * Di chuyen camera (co the dung cho camera shake effects)
+     * Di chuyển camera (có thể dùng cho camera shake effects)
      * @param {number} x 
      * @param {number} y 
      * @param {number} z 
@@ -84,7 +84,7 @@ export class Camera {
     }
 
     /**
-     * Reset camera ve vi tri ban dau
+     * Reset camera về vị trí ban đầu
      */
     reset() {
         if (this.camera && this.originalPosition) {
@@ -98,15 +98,15 @@ export class Camera {
     }
 
     /**
-     * Camera shake effect (khi player bi hit, boss xuat hien...)
-     * @param {number} intensity - Cuong do shake
-     * @param {number} duration - Thoi gian shake (ms)
+     * Camera shake effect (khi player bị hit, boss xuất hiện...)
+     * @param {number} intensity - Cường độ shake
+     * @param {number} duration - Thời gian shake (ms)
      * TODO: Implement camera shake animation
      */
     shake(intensity = 0.1, duration = 200) {
         // TODO: Implement camera shake animation
-        // - Luu vi tri ban dau
-        // - Tao animation random offset
-        // - Reset ve vi tri ban dau sau duration
+        // - Lưu vị trí ban đầu
+        // - Tạo animation random offset
+        // - Reset về vị trí ban đầu sau duration
     }
 }

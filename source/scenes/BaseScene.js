@@ -3,8 +3,8 @@
  * BASESCENE.JS
  * ============================================
  * 
- * Base class cho t?t c? c�c Scene
- * Cung c?p interface chung cho init, update, cleanup
+ * Base class cho tất cả các Scene
+ * Cung cấp interface chung cho init, update, cleanup
  */
 
 export class BaseScene {
@@ -15,11 +15,11 @@ export class BaseScene {
     }
 
     /**
-     * Kh?i t?o scene
+     * Khởi tạo scene
      * @param {THREE.Scene} scene - Three.js scene
      * @param {THREE.Camera} camera - Three.js camera
-     * @param {object} data - D? li?u truy?n v�o (optional)
-     * TODO: Implement trong c�c class con
+     * @param {object} data - Dữ liệu truyền vào (optional)
+     * TODO: Implement trong các class con
      */
     init(scene, camera, data = {}) {
         this.scene = scene;
@@ -28,18 +28,18 @@ export class BaseScene {
     }
 
     /**
-     * Update scene m?i frame
-     * @param {number} deltaTime - Th?i gian t? frame tr??c (ms)
-     * TODO: Implement trong c�c class con
+     * Update scene mỗi frame
+     * @param {number} deltaTime - Thời gian từ frame trước (ms)
+     * TODO: Implement trong các class con
      */
     update(deltaTime) {
         // Override in child classes
     }
 
     /**
-     * Cleanup khi scene b? destroy
+     * Cleanup khi scene bị destroy
      * TODO: Implement cleanup logic
-     * - Remove t?t c? objects kh?i scene
+     * - Remove tất cả objects khỏi scene
      * - Dispose textures, geometries, materials
      * - Clear event listeners
      */
@@ -49,7 +49,7 @@ export class BaseScene {
     }
 
     /**
-     * X? l� khi window resize
+     * Xử lý khi window resize
      * TODO: Implement resize handler
      */
     onResize() {

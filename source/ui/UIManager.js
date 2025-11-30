@@ -3,8 +3,8 @@
  * UIMANAGER.JS
  * ============================================
  * 
- * Qu?n l� t?t c? UI elements
- * Hi?n th?/?n c�c screen, update HUD, handle UI events
+ * Quản lý tất cả UI elements
+ * Hiển thị/ẩn các screen, update HUD, handle UI events
  */
 
 export class UIManager {
@@ -15,11 +15,11 @@ export class UIManager {
     }
 
     /**
-     * Kh?i t?o UI Manager
+     * Khởi tạo UI Manager
      * TODO: Implement initialization
-     * - Get references ??n t?t c? screen elements t? DOM
+     * - Get references đến tất cả screen elements từ DOM
      * - Setup HUD
-     * - Hide t?t c? screens ban ??u
+     * - Hide tất cả screens ban đầu
      */
     init() {
         // TODO: Get screen elements
@@ -39,7 +39,7 @@ export class UIManager {
     }
 
     /**
-     * Hi?n th? m?t screen
+     * Hiển thị một screen
      * @param {string} screenName 
      * TODO: Implement show screen
      */
@@ -58,7 +58,7 @@ export class UIManager {
     }
 
     /**
-     * ?n m?t screen
+     * Ẩn một screen
      * @param {string} screenName 
      */
     hideScreen(screenName) {
@@ -69,7 +69,7 @@ export class UIManager {
     }
 
     /**
-     * ?n t?t c? screens
+     * Ẩn tất cả screens
      * TODO: Implement hide all
      */
     hideAllScreens() {
@@ -100,7 +100,7 @@ export class UIManager {
         //     document.getElementById('level-value').textContent = data.level;
         // }
         
-        // TODO: Update boss health n?u c�
+        // TODO: Update boss health nếu có
         // if (data.bossHealth !== undefined) {
         //     this.updateBossHealthBar(data.bossHealth, data.bossMaxHealth);
         // }
@@ -132,11 +132,11 @@ export class UIManager {
     }
 
     /**
-     * Hi?n th? boss warning icon
+     * Hiển thị boss warning icon
      * TODO: Implement boss warning
      */
     showBossWarning() {
-        // TODO: Show boss icon v?i animation
+        // TODO: Show boss icon với animation
         // const bossIcon = document.getElementById('boss-icon');
         // if (bossIcon) {
         //     bossIcon.classList.remove('hidden');
@@ -145,7 +145,7 @@ export class UIManager {
     }
 
     /**
-     * ?n boss warning icon
+     * Ẩn boss warning icon
      * TODO: Implement hide boss warning
      */
     hideBossWarning() {
@@ -169,7 +169,7 @@ export class UIManager {
     }
 
     /**
-     * Hi?n th? level up effect
+     * Hiển thị level up effect
      * @param {number} level 
      * TODO: Implement level up UI
      */
@@ -181,7 +181,7 @@ export class UIManager {
     }
 
     /**
-     * Hi?n th? score popup (khi kill enemy)
+     * Hiển thị score popup (khi kill enemy)
      * @param {number} points 
      * @param {number} x 
      * @param {number} y 
@@ -189,8 +189,8 @@ export class UIManager {
      */
     showScorePopup(points, x, y) {
         // TODO: Create floating score text
-        // - "+10" text t?i v? tr� x, y
-        // - Animation: fade out v� move up
+        // - "+10" text tại vị trí x, y
+        // - Animation: fade out và move up
         // - Remove sau animation
     }
 }
