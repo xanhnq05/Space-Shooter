@@ -56,9 +56,23 @@ Space-Shooter/
 
 ## 🚀 Chạy Game
 
-1. Mở file `index.html` trong trình duyệt web
-2. Hoặc sử dụng local server (XAMPP, Live Server, etc.)
-3. Đảm bảo trình duyệt hỗ trợ WebGL
+### Cài Đặt và Khởi Động
+
+1. **Đặt thư mục dự án vào htdocs**
+   - Đảm bảo thư mục `Space-Shooter` được đặt trong thư mục `htdocs` của XAMPP
+   - Đường dẫn: `C:\xampp\htdocs\Space-Shooter\`
+
+2. **Khởi động XAMPP**
+   - Mở XAMPP Control Panel
+   - Khởi động Apache (click nút "Start" bên cạnh Apache)
+
+3. **Truy cập game**
+   - Mở trình duyệt web (Chrome, Firefox, Edge, etc.)
+   - Truy cập địa chỉ: `http://localhost/Space-Shooter/`
+
+4. **Yêu cầu hệ thống**
+   - Trình duyệt hỗ trợ WebGL
+   - Khuyến nghị sử dụng Chrome, Firefox, hoặc Edge mới nhất
 
 ## 📝 Lưu Ý
 
