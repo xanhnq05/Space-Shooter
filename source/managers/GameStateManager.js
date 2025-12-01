@@ -1,12 +1,4 @@
-/**
- * ============================================
- * GAMESTATEMANAGER.JS
- * ============================================
- * 
- * Quản lý các state của game
- * Chuyển đổi giữa các scene: Menu -> Level Select -> Gameplay -> Game Over
- * Quản lý luồng game logic
- */
+// Quản lý các state của game
 
 import { GameState } from '../utils/Constants.js';
 
@@ -14,49 +6,30 @@ export class GameStateManager {
     constructor() {
         this.currentState = GameState.LOADING;
         this.previousState = null;
-        this.stateListeners = new Map(); // Callbacks khi state thay đổi
+        this.stateListeners = new Map();
         
-        // Reference đến các scene managers
         this.scenes = {
+            loading: null,
             mainMenu: null,
-            levelSelect: null,
-            shop: null,
-            upgrade: null,
             gameplay: null,
             gameOver: null
         };
     }
 
-    /**
-     * Chuyển đổi state
-     * @param {string} newState - State mới từ GameState constants
-     * @param {object} data - Dữ liệu truyền vào state mới (optional)
-     * TODO: Implement state transition
-     * - Validate state hợp lệ
-     * - Lưu previousState
-     * - Gọi exit callback của state cũ
-     * - Gọi enter callback của state mới
-     * - Trigger state change event
-     */
+    // Chuyển đổi state
     changeState(newState, data = {}) {
-        // TODO: Implement state change logic
-        // if (!Object.values(GameState).includes(newState)) {
-        //     console.error('Invalid state:', newState);
-        //     return;
-        // }
-        // 
-        // this.previousState = this.currentState;
-        // this.currentState = newState;
-        // 
-        // // Trigger state change callbacks
-        // this.notifyStateChange(newState, data);
+        if (!Object.values(GameState).includes(newState)) {
+            console.error('Invalid state:', newState);
+            return;
+        }
+        
+        this.previousState = this.currentState;
+        this.currentState = newState;
+        
+        this.notifyStateChange(newState, data);
     }
 
-    /**
-     * Thêm listener cho state change
-     * @param {string} state 
-     * @param {function} callback 
-     */
+    // Thêm listener cho state change
     onStateChange(state, callback) {
         if (!this.stateListeners.has(state)) {
             this.stateListeners.set(state, []);
@@ -64,11 +37,7 @@ export class GameStateManager {
         this.stateListeners.get(state).push(callback);
     }
 
-    /**
-     * Thông báo state change cho các listeners
-     * @param {string} state 
-     * @param {object} data 
-     */
+    // Thông báo state change cho các listeners
     notifyStateChange(state, data) {
         const listeners = this.stateListeners.get(state);
         if (listeners) {
@@ -76,55 +45,34 @@ export class GameStateManager {
         }
     }
 
-    /**
-     * Lấy state hiện tại
-     * @returns {string}
-     */
+    // Lấy state hiện tại
     getCurrentState() {
         return this.currentState;
     }
 
-    /**
-     * Kiểm tra có đang ở state nào đó không
-     * @param {string} state 
-     * @returns {boolean}
-     */
+    // Kiểm tra có đang ở state nào đó không
     isState(state) {
         return this.currentState === state;
     }
 
-    /**
-     * Quay lại state trước đó
-     * TODO: Implement go back to previous state
-     */
+    // Quay lại state trước đó
     goBack() {
-        // TODO: Return to previousState if exists
-        // if (this.previousState) {
-        //     this.changeState(this.previousState);
-        // }
+        if (this.previousState) {
+            this.changeState(this.previousState);
+        }
     }
 
-    /**
-     * Đăng ký scene manager
-     * @param {string} sceneName 
-     * @param {object} sceneInstance 
-     */
+    // Đăng ký scene manager
     registerScene(sceneName, sceneInstance) {
         this.scenes[sceneName] = sceneInstance;
     }
 
-    /**
-     * Lấy scene instance
-     * @param {string} sceneName 
-     * @returns {object}
-     */
+    // Lấy scene instance
     getScene(sceneName) {
         return this.scenes[sceneName];
     }
 
-    /**
-     * Pause game (từ gameplay)
-     */
+    // Tạm dừng game
     pause() {
         if (this.currentState === GameState.GAMEPLAY) {
             this.previousState = this.currentState;
@@ -132,9 +80,7 @@ export class GameStateManager {
         }
     }
 
-    /**
-     * Resume game (từ paused)
-     */
+    // Tiếp tục game
     resume() {
         if (this.currentState === GameState.PAUSED) {
             this.changeState(this.previousState || GameState.GAMEPLAY);

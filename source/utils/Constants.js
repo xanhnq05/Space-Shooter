@@ -1,62 +1,29 @@
-/**
- * ============================================
- * CONSTANTS.JS
- * ============================================
- * 
- * Chứa tất cả các hằng số được sử dụng trong game
- * Bao gồm: Game states, paths, configs, scoring system
- */
+// Chứa tất cả các hằng số được sử dụng trong game
 
-// ============================================
-// GAME STATES
-// ============================================
 export const GameState = {
     LOADING: 'loading',
     MAIN_MENU: 'main_menu',
-    LEVEL_SELECT: 'level_select',
-    SHOP: 'shop',
-    UPGRADE: 'upgrade',
     GAMEPLAY: 'gameplay',
     PAUSED: 'paused',
-    GAME_OVER: 'game_over',
-    VICTORY: 'victory'
+    GAME_OVER: 'game_over'
 };
 
-// ============================================
-// ASSET PATHS
-// ============================================
 export const AssetPaths = {
-    // Player Ships
     PLAYER_SHIP: 'assets/Spaceship-2d-game-sprites/PNG/Ship_01/Ship_LVL_1.png',
-    
-    // Enemy Ships
     ENEMY_SHIP: 'assets/Enemy-spaceship-game-sprites/PNG/Ships/Ship_0',
-    
-    // Boss Ships
     BOSS_01: 'assets/Boss-spaceship-game-sprites/PNG/Boss_01',
     BOSS_02: 'assets/Boss-spaceship-game-sprites/PNG/Boss_02',
     BOSS_03: 'assets/Boss-spaceship-game-sprites/PNG/Boss_03',
-    
-    // Backgrounds
     BG_VERTICAL: 'assets/Space-vertical-game-backgrounds/PNG/Space_BG_01',
     BG_2D: 'assets/Space-shooter-2d-game-backgrounds/PNG/Space_BG_01',
-    
-    // UI Elements
     UI_MAIN_MENU: 'assets/Space-shooter-game-gui/PNG/Main_Menu',
     UI_BUTTONS: 'assets/Space-shooter-game-gui/PNG/Buttons',
-    UI_SHOP: 'assets/Space-shooter-game-gui/PNG/Shop',
     UI_HUD: 'assets/Space-shooter-game-gui/PNG/Main_UI',
-    
-    // Effects
     EXPLOSION: 'assets/Spaceship-2d-game-sprites/PNG/Ship_01/Explosion',
     BOSS_ICONS: 'assets/Boss-spaceship-game-sprites/PNG/Boss_Icons'
 };
 
-// ============================================
-// GAME CONFIGURATION
-// ============================================
 export const GameConfig = {
-    // Camera Settings
     CAMERA: {
         FOV: 75,
         NEAR: 0.1,
@@ -65,35 +32,40 @@ export const GameConfig = {
         LOOK_AT: { x: 0, y: 0, z: 0 }
     },
     
-    // Player Settings
     PLAYER: {
         SPEED: 0.3,
         START_HEALTH: 100,
-        SHOOT_COOLDOWN: 300, // milliseconds
-        BULLET_SPEED: 0.5
+        SHOOT_COOLDOWN: 50, // Giảm cooldown để bắn nhanh hơn (100ms interval)
+        BULLET_SPEED: 0.02,
+        BULLET_DAMAGE: 1,
+        MOVEMENT_SENSITIVITY: 0.01,
+        MOVEMENT_LERP_SPEED: 0.1, // Tốc độ lerp khi di chuyển player
+        TRANSITION_SPEED: 0.01 // Tốc độ bay lên khi chuyển map (chậm hơn để mượt mà)
     },
     
-    // Enemy Settings
     ENEMY: {
-        SPAWN_INTERVAL: 2000, // milliseconds
+        SPAWN_INTERVAL: 2000,
         BASE_SPEED: 0.05,
-        HEALTH: 1
+        BASE_HEALTH: 5, // Máu ban đầu của enemy
+        HEALTH_INCREASE_RATE: 0.2, // Tăng 20% máu mỗi lần xuất hiện
+        ATTACK_SPEED: 0.01, // Tốc độ tấn công của enemy
+        RETURN_SPEED: 0.015, // Tốc độ quay lại vị trí ban đầu
+        MOVE_DOWN_SPEED: 0.015 // Tốc độ bay xuống ban đầu
     },
     
-    // Boss Settings
     BOSS: {
-        HEALTH: 1000,
-        SPAWN_AT_LEVEL: 5, // Boss xuất hiện ở level 5
+        BASE_HEALTH: 500, // Máu ban đầu của boss
+        HEALTH_INCREASE_RATE: 0.5, // Tăng 50% máu mỗi lần xuất hiện
+        SPAWN_AT_LEVEL: 3, // Boss xuất hiện mỗi 3 wave
         ATTACK_PATTERNS: 3
     },
     
-    // Background Settings
     BACKGROUND: {
-        SCROLL_SPEED: 0.02,
+        SCROLL_SPEED: 0.001, // Giảm tốc độ scroll để người chơi có thể tiêu diệt quái
+        TRANSITION_SCROLL_MULTIPLIER: 2, // Tăng tốc scroll khi transition (x2)
         LAYER_COUNT: 4
     },
     
-    // Scoring System
     SCORING: {
         ENEMY_KILL: 10,
         BOSS_KILL: 1000,
@@ -101,18 +73,13 @@ export const GameConfig = {
         PERFECT_CLEAR: 500
     },
     
-    // Level Progression
     LEVEL: {
-        SCORE_PER_LEVEL: 100, // Cần bao nhiêu điểm để lên level
-        DIFFICULTY_MULTIPLIER: 1.2 // Nhân độ khó mỗi level
+        SCORE_PER_LEVEL: 100,
+        DIFFICULTY_MULTIPLIER: 1.2
     }
 };
 
-// ============================================
-// UI CONFIGURATION
-// ============================================
 export const UIConfig = {
-    // HUD Positions
     HUD: {
         SCORE_POSITION: 'top-left',
         HEALTH_POSITION: 'bottom-left',
@@ -120,27 +87,18 @@ export const UIConfig = {
         PAUSE_BUTTON_POSITION: 'top-right'
     },
     
-    // Menu Settings
     MENU: {
         BUTTON_SPACING: 20,
         ANIMATION_DURATION: 300
     }
 };
 
-// ============================================
-// STORAGE KEYS
-// ============================================
 export const StorageKeys = {
     PLAYER_DATA: 'space_shooter_player_data',
     SETTINGS: 'space_shooter_settings',
-    HIGH_SCORE: 'space_shooter_high_score',
-    UNLOCKED_LEVELS: 'space_shooter_unlocked_levels',
-    PURCHASED_ITEMS: 'space_shooter_purchased_items'
+    HIGH_SCORE: 'space_shooter_high_score'
 };
 
-// ============================================
-// DIFFICULTY LEVELS
-// ============================================
 export const Difficulty = {
     EASY: {
         name: 'Dễ',
@@ -162,33 +120,6 @@ export const Difficulty = {
     }
 };
 
-// ============================================
-// SHOP ITEMS
-// ============================================
-export const ShopItems = {
-    SHIP_UPGRADE: {
-        id: 'ship_upgrade',
-        name: 'Nâng cấp tàu',
-        price: 100,
-        type: 'upgrade'
-    },
-    HEALTH_BOOST: {
-        id: 'health_boost',
-        name: 'Tăng máu',
-        price: 50,
-        type: 'powerup'
-    },
-    REMOVE_ADS: {
-        id: 'remove_ads',
-        name: 'Gỡ quảng cáo',
-        price: 500,
-        type: 'premium'
-    }
-};
-
-// ============================================
-// ANIMATION TIMINGS
-// ============================================
 export const AnimationTimings = {
     FADE_IN: 300,
     FADE_OUT: 300,

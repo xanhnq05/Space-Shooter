@@ -1,11 +1,4 @@
-/**
- * ============================================
- * GAMEENGINE.JS
- * ============================================
- * 
- * Game Engine chính - Quản lý game loop, scene, renderer
- * Entry point cho tất cả các hệ thống game
- */
+// Game Engine chính - quản lý game loop, scene, renderer
 
 import * as THREE from 'three';
 import { Camera } from './Camera.js';
@@ -15,178 +8,143 @@ import { GameState } from '../utils/Constants.js';
 
 export class GameEngine {
     constructor() {
-        // Core Three.js components
         this.scene = null;
         this.renderer = null;
         this.camera = null;
         
-        // Managers
         this.cameraManager = new Camera();
         this.stateManager = new GameStateManager();
         this.dataManager = new DataManager();
         
-        // Game loop
         this.isRunning = false;
         this.lastTime = 0;
         this.deltaTime = 0;
         
-        // Scene references (sẽ được khởi tạo sau)
         this.currentSceneInstance = null;
     }
 
-    /**
-     * Khởi tạo game engine
-     * TODO: Implement initialization
-     * - Tạo Three.js Scene
-     * - Khởi tạo Camera
-     * - Tạo WebGL Renderer với antialias
-     * - Setup renderer size và pixel ratio
-     * - Append renderer DOM vào body
-     * - Setup window resize handler
-     */
+    // Khởi tạo game engine
     init() {
-        // TODO: Initialize Three.js scene
-        // this.scene = new THREE.Scene();
-        // this.scene.background = new THREE.Color(0x000011);
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0x050d1f);
         
-        // TODO: Initialize camera
-        // this.camera = this.cameraManager.init();
+        this.camera = this.cameraManager.init();
         
-        // TODO: Initialize renderer
-        // this.renderer = new THREE.WebGLRenderer({ antialias: true });
-        // this.renderer.setSize(window.innerWidth, window.innerHeight);
-        // this.renderer.setPixelRatio(window.devicePixelRatio);
-        // document.body.appendChild(this.renderer.domElement);
+        const canvas = document.getElementById('game-canvas');
+        this.renderer = new THREE.WebGLRenderer({ 
+            canvas: canvas,
+            antialias: true 
+        });
         
-        // TODO: Setup resize handler
-        // window.addEventListener('resize', () => this.handleResize());
+        const container = document.getElementById('game-container');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
         
-        // TODO: Setup state change listeners
-        // this.setupStateListeners();
+        this.renderer.setSize(width, height);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setClearColor(0x050d1f, 1);
+        this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+        this.renderer.toneMapping = THREE.NoToneMapping;
+        
+        window.addEventListener('resize', () => this.handleResize());
+        
+        this.setupStateListeners();
     }
 
-    /**
-     * Setup listeners cho state changes
-     * TODO: Implement state change handlers
-     */
+    // Thiết lập listeners cho state changes
     setupStateListeners() {
-        // TODO: Listen to state changes và load scene tương ứng
-        // this.stateManager.onStateChange(GameState.MAIN_MENU, () => {
-        //     this.loadScene('mainMenu');
-        // });
-        // 
-        // this.stateManager.onStateChange(GameState.LEVEL_SELECT, () => {
-        //     this.loadScene('levelSelect');
-        // });
-        // 
-        // this.stateManager.onStateChange(GameState.GAMEPLAY, (data) => {
-        //     this.loadScene('gameplay', data);
-        // });
-        // ... các state khác
-    }
-
-    /**
-     * Load scene mới
-     * @param {string} sceneName 
-     * @param {object} data 
-     * TODO: Implement scene loading
-     */
-    loadScene(sceneName, data = {}) {
-        // TODO: Cleanup scene cũ nếu có
-        // if (this.currentSceneInstance) {
-        //     this.currentSceneInstance.cleanup();
-        // }
+        this.stateManager.onStateChange(GameState.LOADING, () => {
+            this.loadScene('loading');
+        });
         
-        // TODO: Get scene instance từ stateManager
-        // const sceneInstance = this.stateManager.getScene(sceneName);
-        // if (sceneInstance) {
-        //     this.currentSceneInstance = sceneInstance;
-        //     sceneInstance.init(this.scene, this.camera, data);
-        // }
+        this.stateManager.onStateChange(GameState.MAIN_MENU, () => {
+            this.loadScene('mainMenu');
+        });
+        
+        this.stateManager.onStateChange(GameState.GAMEPLAY, (data) => {
+            this.loadScene('gameplay', data);
+        });
+        
+        this.stateManager.onStateChange(GameState.PAUSED, () => {
+        });
+        
+        this.stateManager.onStateChange(GameState.GAME_OVER, (data) => {
+            this.loadScene('gameOver', data);
+        });
     }
 
-    /**
-     * Bắt đầu game loop
-     * TODO: Implement game loop
-     */
+    // Load scene mới
+    loadScene(sceneName, data = {}) {
+        if (this.currentSceneInstance) {
+            this.currentSceneInstance.cleanup();
+        }
+        
+        const sceneInstance = this.stateManager.getScene(sceneName);
+        if (sceneInstance) {
+            this.currentSceneInstance = sceneInstance;
+            sceneInstance.init(this.scene, this.camera, data);
+        }
+    }
+
+    // Bắt đầu game loop
     start() {
         if (this.isRunning) return;
         
         this.isRunning = true;
         this.lastTime = performance.now();
         
-        // TODO: Start animation loop
-        // this.animate();
+        this.animate();
     }
 
-    /**
-     * Game loop chính
-     * TODO: Implement animation loop
-     */
+    // Game loop chính
     animate() {
         if (!this.isRunning) return;
         
         requestAnimationFrame(() => this.animate());
         
-        // TODO: Calculate deltaTime
-        // const currentTime = performance.now();
-        // this.deltaTime = currentTime - this.lastTime;
-        // this.lastTime = currentTime;
+        const currentTime = performance.now();
+        this.deltaTime = currentTime - this.lastTime;
+        this.lastTime = currentTime;
         
-        // TODO: Update current scene
-        // if (this.currentSceneInstance && this.currentSceneInstance.update) {
-        //     this.currentSceneInstance.update(this.deltaTime);
-        // }
+        if (this.currentSceneInstance && this.currentSceneInstance.update) {
+            this.currentSceneInstance.update(this.deltaTime);
+        }
         
-        // TODO: Render scene
-        // if (this.renderer && this.scene && this.camera) {
-        //     this.renderer.render(this.scene, this.camera);
-        // }
+        if (this.renderer && this.scene && this.camera) {
+            this.renderer.render(this.scene, this.camera);
+        }
     }
 
-    /**
-     * Dừng game loop
-     */
+    // Dừng game loop
     stop() {
         this.isRunning = false;
     }
 
-    /**
-     * Xử lý window resize
-     * TODO: Implement resize handler
-     */
+    // Xử lý window resize
     handleResize() {
-        // TODO: Update camera
-        // this.cameraManager.handleResize();
+        this.cameraManager.handleResize();
         
-        // TODO: Update renderer size
-        // if (this.renderer) {
-        //     this.renderer.setSize(window.innerWidth, window.innerHeight);
-        // }
+        if (this.renderer) {
+            const container = document.getElementById('game-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            this.renderer.setSize(width, height);
+        }
         
-        // TODO: Notify current scene về resize
-        // if (this.currentSceneInstance && this.currentSceneInstance.onResize) {
-        //     this.currentSceneInstance.onResize();
-        // }
+        if (this.currentSceneInstance && this.currentSceneInstance.onResize) {
+            this.currentSceneInstance.onResize();
+        }
     }
 
-    /**
-     * Cleanup khi game kết thúc
-     */
+    // Dọn dẹp
     cleanup() {
         this.stop();
         
         if (this.currentSceneInstance) {
             this.currentSceneInstance.cleanup();
         }
-        
-        // TODO: Dispose Three.js resources
-        // if (this.renderer) {
-        //     this.renderer.dispose();
-        // }
     }
 
-    // Getters
     getScene() { return this.scene; }
     getRenderer() { return this.renderer; }
     getCamera() { return this.camera; }

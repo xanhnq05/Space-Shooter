@@ -1,12 +1,4 @@
-/**
- * ============================================
- * MAINMENUSCENE.JS
- * ============================================
- * 
- * Scene cho Main Menu
- * Hiển thị: Logo, nút Play, Shop, Settings, Exit
- * Xử lý: Click vào các nút để chuyển scene
- */
+// Scene cho Main Menu
 
 import { BaseScene } from './BaseScene.js';
 import { GameState } from '../utils/Constants.js';
@@ -18,91 +10,76 @@ export class MainMenuScene extends BaseScene {
         this.gameEngine = gameEngine;
         this.uiElements = [];
         this.background = null;
+        this.screenElements = [];
+        this.mainMenuElement = null;
     }
 
-    /**
-     * Khởi tạo Main Menu Scene
-     * TODO: Implement initialization
-     * - Load background (có thể là static image hoặc animated)
-     * - Setup UI elements (buttons)
-     * - Setup event listeners cho các nút
-     * - Hiển thị high score nếu có
-     */
+    // Khởi tạo Main Menu Scene
     init(scene, camera, data = {}) {
         super.init(scene, camera, data);
-        
-        // TODO: Create background
-        // this.createBackground();
-        
-        // TODO: Setup UI
-        // this.setupUI();
-        
-        // TODO: Setup button listeners
-        // this.setupEventListeners();
+        this.cacheDomElements();
+        this.showMainMenuUI();
+        this.setupEventListeners();
+        this.loadHighScore();
     }
 
-    /**
-     * Tạo background cho menu
-     * TODO: Implement background creation
-     * - Load texture từ AssetPaths
-     * - Tạo PlaneGeometry với kích thước phù hợp
-     * - Có thể thêm animation nhẹ (parallax, rotation...)
-     */
+    // Lưu lại các DOM screen
+    cacheDomElements() {
+        this.screenElements = Array.from(document.querySelectorAll('#game-container .screen'));
+        this.mainMenuElement = document.getElementById('main-menu');
+    }
+
+    // Hiển thị Main Menu và ẩn các screen khác
+    showMainMenuUI() {
+        if (!this.screenElements?.length || !this.mainMenuElement) {
+            return;
+        }
+        
+        this.screenElements.forEach(screen => {
+            if (screen === this.mainMenuElement) {
+                screen.classList.remove('hidden');
+            } else {
+                screen.classList.add('hidden');
+            }
+        });
+    }
+
+    // Tạo background cho menu
     createBackground() {
-        // TODO: Load background texture
-        // const textureLoader = new THREE.TextureLoader();
-        // const texture = textureLoader.load('path/to/menu/bg.png');
-        // 
-        // const geometry = new THREE.PlaneGeometry(20, 20);
-        // const material = new THREE.MeshBasicMaterial({ map: texture });
-        // this.background = new THREE.Mesh(geometry, material);
-        // this.background.position.z = -5;
-        // this.scene.add(this.background);
     }
 
-    /**
-     * Setup UI elements
-     * TODO: Implement UI setup
-     * - Tạo các nút: Play, Shop, Settings, Exit
-     * - Position các nút trên màn hình
-     * - Style buttons (có thể dùng CSS hoặc Three.js sprites)
-     */
+    // Thiết lập UI elements
     setupUI() {
-        // TODO: Create UI buttons
-        // Có thể dùng HTML overlay hoặc Three.js sprites
     }
 
-    /**
-     * Setup event listeners
-     * TODO: Implement button click handlers
-     * - Play button -> chuyển đến LevelSelectScene
-     * - Shop button -> chuyển đến ShopScene
-     * - Settings button -> mở settings overlay
-     * - Exit button -> confirm và exit
-     */
+    // Thiết lập event listeners
     setupEventListeners() {
-        // TODO: Add click listeners
-        // document.getElementById('btn-start')?.addEventListener('click', () => {
-        //     this.gameEngine.getStateManager().changeState(GameState.LEVEL_SELECT);
-        // });
+        const playButton = document.getElementById('btn-play');
+        if (playButton) {
+            playButton.addEventListener('click', () => {
+                this.gameEngine.getStateManager().changeState(GameState.GAMEPLAY);
+            });
+        }
     }
 
-    /**
-     * Update scene (nếu có animation)
-     * TODO: Implement update logic
-     * - Animate background nếu cần
-     * - Update UI animations
-     */
+    // Load và hiển thị high score
+    loadHighScore() {
+        const highScoreDisplay = document.getElementById('high-score-display');
+        if (highScoreDisplay) {
+            const highScore = this.gameEngine.getDataManager().getHighScore() || 0;
+            highScoreDisplay.textContent = highScore;
+        }
+    }
+
+    // Cập nhật scene
     update(deltaTime) {
-        // TODO: Update animations
     }
 
-    /**
-     * Cleanup
-     * TODO: Implement cleanup
-     */
+    // Dọn dẹp
     cleanup() {
-        // TODO: Remove all objects, event listeners
+        if (this.mainMenuElement) {
+            this.mainMenuElement.classList.add('hidden');
+        }
         super.cleanup();
     }
 }

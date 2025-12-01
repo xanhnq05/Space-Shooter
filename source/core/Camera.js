@@ -1,11 +1,4 @@
-/**
- * ============================================
- * CAMERA.JS
- * ============================================
- * 
- * Quản lý Camera cho Three.js game
- * Setup camera với các thông số tối ưu cho game 2D/2.5D space shooter
- */
+// Quản lý Camera cho Three.js game
 
 import * as THREE from 'three';
 import { GameConfig } from '../utils/Constants.js';
@@ -17,12 +10,13 @@ export class Camera {
         this.originalPosition = null;
     }
 
-    /**
-     * Khởi tạo Camera với cấu hình từ Constants
-     * Camera đã được setup hoàn chỉnh
-     */
+    // Khởi tạo Camera
     init() {
-        const aspect = window.innerWidth / window.innerHeight;
+        const container = document.getElementById('game-container');
+        const width = container ? container.clientWidth : window.innerWidth;
+        const height = container ? container.clientHeight : window.innerHeight;
+        const aspect = width / height;
+        
         this.camera = new THREE.PerspectiveCamera(
             GameConfig.CAMERA.FOV,
             aspect,
@@ -42,17 +36,13 @@ export class Camera {
             GameConfig.CAMERA.LOOK_AT.z
         );
         
-        // Lưu vị trí ban đầu cho shake effect
         this.originalPosition = this.camera.position.clone();
         
         this.initialized = true;
         return this.camera;
     }
 
-    /**
-     * Lấy instance camera
-     * @returns {THREE.PerspectiveCamera}
-     */
+    // Lấy instance camera
     getCamera() {
         if (!this.initialized) {
             this.init();
@@ -60,32 +50,25 @@ export class Camera {
         return this.camera;
     }
 
-    /**
-     * Xử lý khi window resize
-     * Camera tự động điều chỉnh aspect ratio
-     */
+    // Xử lý khi window resize
     handleResize() {
         if (this.camera) {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
+            const container = document.getElementById('game-container');
+            const width = container ? container.clientWidth : window.innerWidth;
+            const height = container ? container.clientHeight : window.innerHeight;
+            this.camera.aspect = width / height;
             this.camera.updateProjectionMatrix();
         }
     }
 
-    /**
-     * Di chuyển camera (có thể dùng cho camera shake effects)
-     * @param {number} x 
-     * @param {number} y 
-     * @param {number} z 
-     */
+    // Di chuyển camera
     setPosition(x, y, z) {
         if (this.camera) {
             this.camera.position.set(x, y, z);
         }
     }
 
-    /**
-     * Reset camera về vị trí ban đầu
-     */
+    // Reset camera về vị trí ban đầu
     reset() {
         if (this.camera && this.originalPosition) {
             this.camera.position.copy(this.originalPosition);
@@ -97,16 +80,7 @@ export class Camera {
         }
     }
 
-    /**
-     * Camera shake effect (khi player bị hit, boss xuất hiện...)
-     * @param {number} intensity - Cường độ shake
-     * @param {number} duration - Thời gian shake (ms)
-     * TODO: Implement camera shake animation
-     */
+    // Camera shake effect
     shake(intensity = 0.1, duration = 200) {
-        // TODO: Implement camera shake animation
-        // - Lưu vị trí ban đầu
-        // - Tạo animation random offset
-        // - Reset về vị trí ban đầu sau duration
     }
 }

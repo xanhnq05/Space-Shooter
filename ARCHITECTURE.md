@@ -1,316 +1,305 @@
-# 📋 Space Shooter Game - Architecture Documentation
+# 🏗️ Space Shooter Game - Architecture Documentation
 
-## 📁 Cấu trúc thư mục
+## 📋 Tổng Quan
+
+Space Shooter là một game bắn tàu vũ trụ 2D được xây dựng bằng **Three.js**, một thư viện JavaScript mạnh mẽ để tạo và hiển thị đồ họa 3D trong trình duyệt. Mặc dù game là 2D, Three.js được sử dụng để tận dụng các tính năng như scene management, camera system, và rendering pipeline hiệu quả.
+
+## 🎯 Three.js trong Project
+
+### 1. **Scene Management** (`THREE.Scene`)
+- **Vị trí**: `source/core/GameEngine.js`
+- **Mục đích**: Quản lý tất cả các đối tượng 3D trong game
+- **Sử dụng**:
+  ```javascript
+  this.scene = new THREE.Scene();
+  this.scene.background = new THREE.Color(0x050d1f);
+  ```
+- **Lợi ích**: Tự động quản lý object hierarchy, culling, và rendering order
+
+### 2. **Camera System** (`THREE.PerspectiveCamera`)
+- **Vị trí**: `source/core/Camera.js`
+- **Mục đích**: Định nghĩa góc nhìn và vị trí camera
+- **Cấu hình**:
+  ```javascript
+  const camera = new THREE.PerspectiveCamera(
+      GameConfig.CAMERA.FOV,      // 75 độ
+      aspect,                     // Tỷ lệ màn hình
+      GameConfig.CAMERA.NEAR,     // 0.1
+      GameConfig.CAMERA.FAR       // 1000
+  );
+  ```
+- **Lợi ích**: Dễ dàng điều chỉnh góc nhìn, zoom, và vị trí camera
+
+### 3. **Renderer** (`THREE.WebGLRenderer`)
+- **Vị trí**: `source/core/GameEngine.js`
+- **Mục đích**: Render scene lên canvas HTML5
+- **Cấu hình**:
+  ```javascript
+  this.renderer = new THREE.WebGLRenderer({ 
+      canvas: canvas,
+      antialias: true 
+  });
+  ```
+- **Lợi ích**: Tận dụng GPU acceleration, hiệu suất cao
+
+### 4. **Mesh Objects** (`THREE.Mesh`)
+- **Vị trí**: Sử dụng rộng rãi trong `GameplayScene.js`, `AnimationHelper.js`
+- **Mục đích**: Đại diện cho các đối tượng game (player, enemy, bullet, boss)
+- **Cấu trúc**:
+  ```javascript
+  const geometry = new THREE.PlaneGeometry(width, height);
+  const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      side: THREE.DoubleSide
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  ```
+- **Sử dụng cho**:
+  - Player ship
+  - Enemy ships (12 loại)
+  - Boss ships (3 loại)
+  - Bullets (player và boss)
+  - Explosion effects
+  - Hit effects
+  - Background layers
+
+### 5. **Textures** (`THREE.TextureLoader`)
+- **Vị trí**: `source/scenes/GameplayScene.js`, `source/helpers/AnimationHelper.js`
+- **Mục đích**: Load và quản lý texture từ file PNG
+- **Caching**: Sử dụng `Map` để cache texture, tránh load lại
+  ```javascript
+  if (!this.textureCache.has(path)) {
+      const texture = this.textureLoader.load(path);
+      textureCache.set(path, texture);
+  }
+  ```
+- **Tối ưu**: 
+  - `NearestFilter` cho pixel art style
+  - `SRGBColorSpace` cho màu sắc chính xác
+  - `flipY: false` để texture hiển thị đúng
+
+### 6. **Geometry** (`THREE.PlaneGeometry`)
+- **Mục đích**: Định nghĩa hình dạng 2D cho các sprite
+- **Sử dụng**: Tất cả game objects đều dùng `PlaneGeometry` (2D plane)
+  ```javascript
+  new THREE.PlaneGeometry(width, height)
+  ```
+
+### 7. **Materials** (`THREE.MeshBasicMaterial`)
+- **Mục đích**: Định nghĩa cách object được render
+- **Tính năng sử dụng**:
+  - `transparent: true` - Cho phép alpha channel
+  - `side: THREE.DoubleSide` - Hiển thị cả 2 mặt
+  - `depthWrite: false` - Tối ưu rendering cho 2D
+
+### 8. **Vector Math** (`THREE.Vector2`, `THREE.Vector3`)
+- **Mục đích**: Tính toán vị trí, khoảng cách, hướng
+- **Sử dụng**:
+  - Player movement
+  - Collision detection
+  - Bullet trajectory
+  - Enemy AI pathfinding
+
+## 🔄 Luồng Hoạt Động của Code
+
+### 1. **Khởi Tạo** (`main.js`)
 
 ```
-js/
-├── core/                    # Core systems
-│   ├── Camera.js           # Camera management (Đã SETUP)
-│   ├── GameEngine.js       # Main game engine, game loop
-│   └── SceneManager.js     # (Optional) Scene management
-│
-├── managers/               # Game managers
-│   ├── DataManager.js      # Save/Load data (localStorage)
-│   ├── GameStateManager.js # State management (menu, gameplay, etc.)
-│   ├── AudioManager.js     # (Future) Sound management
-│   └── InputManager.js     # (Future) Input handling
-│
-├── scenes/                 # Game scenes
-│   ├── BaseScene.js        # Base class cho tất cả scenes
-│   ├── MainMenuScene.js    # Main menu
-│   ├── LevelSelectScene.js # Level selection
-│   ├── ShopScene.js        # Shop để mua items
-│   ├── UpgradeScene.js     # Upgrade ship stats
-│   ├── GameplayScene.js    # Main gameplay
-│   └── GameOverScene.js    # Game over / Victory
-│
-├── ui/                     # UI system
-│   ├── UIManager.js        # Quản lý tất cả UI
-│   ├── HUD.js              # HUD trong gameplay
-│   ├── MenuUI.js           # (Future) Menu UI components
-│   └── ShopUI.js           # (Future) Shop UI components
-│
-├── game/                   # Game objects (sẽ tạo sau)
-│   ├── Player.js           # Player ship
-│   ├── Enemy.js            # Enemy ships
-│   ├── Boss.js             # Boss enemies
-│   ├── Bullet.js           # Bullets
-│   └── Background.js       # Scrolling background
-│
-├── data/                   # Data structures
-│   ├── GameData.js         # (Future) Game data structures
-│   └── SaveData.js         # (Future) Save data format
-│
-├── utils/                  # Utilities
-│   ├── Constants.js        # Game constants, configs
-│   └── Helpers.js          # Helper functions
-│
-└── main.js                 # Entry point
+main.js
+  └─> GameEngine.init()
+      ├─> Tạo THREE.Scene
+      ├─> Tạo THREE.PerspectiveCamera (từ Camera.js)
+      ├─> Tạo THREE.WebGLRenderer
+      └─> Khởi tạo GameStateManager
+      
+  └─> Tạo các Scene instances
+      ├─> LoadingScene
+      ├─> MainMenuScene
+      ├─> GameplayScene
+      └─> GameOverScene
+      
+  └─> Đăng ký scenes vào GameStateManager
+  └─> Bắt đầu game loop
 ```
 
-## 🔄 Luồng game (Game Flow)
+### 2. **Game Loop** (`GameEngine.js`)
 
-```
-1. LOADING
-   │
-2. MAIN_MENU
-   ├── Play → LEVEL_SELECT
-   ├── Shop → SHOP
-   ├── Upgrade → UPGRADE
-   └── Settings → (Overlay)
-   │
-3. LEVEL_SELECT
-   └── Select Level → GAMEPLAY
-   │
-4. GAMEPLAY
-   ├── Pause → PAUSED
-   │   ├── Resume → GAMEPLAY
-   │   ├── Restart → GAMEPLAY (restart)
-   │   └── Quit → MAIN_MENU
-   │
-   ├── Player Dies → GAME_OVER
-   └── Boss Defeated → GAME_OVER (Victory)
-   │
-5. GAME_OVER
-   ├── Play Again → GAMEPLAY (same level)
-   └── Main Menu → MAIN_MENU
+```javascript
+gameLoop(timestamp) {
+    1. Tính deltaTime (thời gian giữa các frame)
+    2. Gọi currentScene.update(deltaTime)
+    3. Renderer.render(scene, camera)
+    4. requestAnimationFrame(gameLoop)
+}
 ```
 
-## 📝 Nhiệm vụ từng file
+### 3. **Gameplay Scene Flow** (`GameplayScene.js`)
 
-### Core Systems
+```
+init()
+  ├─> Tạo player (THREE.Mesh)
+  ├─> Setup input handlers
+  ├─> Setup audio
+  └─> Bắt đầu wave đầu tiên
 
-#### `Camera.js` ✅
-- **Nhiệm vụ**: Setup và quản lý Three.js Camera
-- **Đã implement**: Camera initialization với config từ Constants
-- **TODO**: Camera shake effects, dynamic positioning
+update(deltaTime)
+  ├─> removeDuplicatePlayerMeshes() - Đảm bảo chỉ có 1 player
+  ├─> updatePlayerPosition() - Di chuyển player theo mouse
+  ├─> moveEnemies(deltaTime) - AI và di chuyển enemy
+  ├─> moveBoss(deltaTime) - Di chuyển và bắn boss
+  ├─> checkCollisions() - Kiểm tra va chạm
+  │   ├─> Bullet vs Enemy
+  │   ├─> Bullet vs Boss
+  │   ├─> Player vs Enemy
+  │   ├─> Player vs Boss
+  │   └─> Player vs Boss Bullet
+  ├─> updateProjectiles(deltaTime) - Di chuyển đạn
+  │   ├─> Player bullets
+  │   ├─> Boss bullets
+  │   ├─> Hit effects animation
+  │   └─> Explosion effects animation
+  ├─> checkWaveCompletion() - Kiểm tra hoàn thành wave
+  └─> updateHUD() - Cập nhật UI
 
-#### `GameEngine.js`
-- **Nhiệm vụ**: 
-  - Khởi tạo Three.js Scene, Renderer
-  - Quản lý game loop
-  - Load/unload scenes
-  - Handle window resize
-- **TODO**: Implement tất cả methods
+startWave()
+  ├─> Hiển thị wave banner
+  └─> spawnWaveEnemies() - Tạo 9 enemies
 
-### Managers
+spawnWaveEnemies()
+  ├─> Load texture từ cache
+  ├─> Tính toán kích thước từ texture
+  ├─> Tạo THREE.Mesh cho mỗi enemy
+  ├─> Setup userData (health, position, AI state)
+  └─> Thêm vào scene và enemies array
 
-#### `DataManager.js`
-- **Nhiệm vụ**:
-  - Lưu/Load player data (localStorage)
-  - Quản lý high scores
-  - Quản lý unlocked levels
-  - Quản lý purchased items
-  - Quản lý settings
-- **TODO**: Implement localStorage operations
+checkCollisions()
+  ├─> Bullet vs Enemy
+  │   ├─> Tính khoảng cách 2D
+  │   ├─> Kiểm tra collision radius
+  │   ├─> Giảm máu enemy
+  │   ├─> Tạo hit effect (THREE.Mesh)
+  │   ├─> Chuyển sang damaged texture khi < 30% máu
+  │   └─> Tạo explosion khi máu <= 0
+  ├─> Bullet vs Boss
+  │   ├─> AABB collision detection
+  │   └─> Giảm máu boss
+  └─> Player vs Enemy/Boss/Bullet
+      ├─> AABB collision detection
+      └─> onPlayerDeath() nếu va chạm
+```
 
-#### `GameStateManager.js`
-- **Nhiệm vụ**:
-  - Quản lý state transitions
-  - Register scene instances
-  - Handle state change callbacks
-  - Pause/Resume logic
-- **TODO**: Implement state change logic
+### 4. **Animation System** (`AnimationHelper.js`)
 
-### Scenes
+```
+createExplosionEffect()
+  ├─> Load 9 frames texture (000-008)
+  ├─> Tạo THREE.Mesh với frame đầu tiên
+  ├─> Lưu frames vào userData.frameTextures
+  └─> Animation được update trong updateProjectiles()
 
-#### `BaseScene.js`
-- **Nhiệm vụ**: Base class cho tất cả scenes
-- **Interface**: `init()`, `update()`, `cleanup()`, `onResize()`
+updateProjectiles()
+  ├─> Kiểm tra thời gian từ lastFrameTime
+  ├─> Chuyển sang frame tiếp theo
+  ├─> Cập nhật material.map
+  └─> Xóa effect khi hoàn thành animation
+```
 
-#### `MainMenuScene.js`
-- **Nhiệm vụ**:
-  - Hiển thị main menu UI
-  - Handle button clicks (Play, Shop, Settings)
-  - Show high score
-- **TODO**: Implement UI creation, event handlers
+### 5. **State Management** (`GameStateManager.js`)
 
-#### `LevelSelectScene.js`
-- **Nhiệm vụ**:
-  - Hiển thị danh sách levels
-  - Show lock/unlock status
-  - Show stars rating
-  - Start gameplay với level được chọn
-- **TODO**: Implement level cards, selection logic
+```
+changeState(newState)
+  ├─> Lưu previousState
+  ├─> Cleanup scene cũ
+  ├─> Init scene mới
+  └─> Notify listeners
 
-#### `ShopScene.js`
-- **Nhiệm vụ**:
-  - Hiển thị shop items
-  - Handle purchases
-  - Check coins balance
-  - Apply item effects
-- **TODO**: Implement shop UI, purchase logic
+States:
+  LOADING → MainMenuScene
+  MAIN_MENU → GameplayScene
+  GAMEPLAY → GameOverScene (khi chết/thắng)
+  GAME_OVER → MainMenuScene hoặc GameplayScene
+```
 
-#### `UpgradeScene.js`
-- **Nhiệm vụ**:
-  - Hiển thị upgrade options (damage, speed, health, fire rate)
-  - Show current level và cost
-  - Handle upgrades
-  - Calculate stat values
-- **TODO**: Implement upgrade UI, upgrade logic
+### 6. **Background System** (`BackgroundManager.js`)
 
-#### `GameplayScene.js`
-- **Nhiệm vụ**:
-  - Quản lý player, enemies, boss
-  - Spawn enemies theo timer
-  - Handle collisions
-  - Update score
-  - Check game over conditions
-- **TODO**: Implement toàn bộ gameplay logic
+```
+create(texturePath)
+  ├─> Load background texture
+  ├─> Tạo 4 layers (THREE.Mesh) để parallax scrolling
+  ├─> Mỗi layer scroll với tốc độ khác nhau
+  └─> Tạo hiệu ứng chiều sâu
 
-#### `GameOverScene.js`
-- **Nhiệm vụ**:
-  - Hiển thị final score, stats
-  - Calculate stars rating
-  - Show Play Again, Main Menu buttons
-- **TODO**: Implement game over UI, rating calculation
+updateScroll(deltaTime, speed)
+  ├─> Di chuyển các layers
+  ├─> Reset position khi ra khỏi màn hình
+  └─> Tạo vòng lặp vô tận
+```
 
-### UI System
+## 📊 Kiến Trúc Code
 
-#### `UIManager.js`
-- **Nhiệm vụ**:
-  - Quản lý tất cả UI screens
-  - Show/hide screens
-  - Update HUD
-  - Handle UI events
-- **TODO**: Implement screen management, HUD updates
+### **Separation of Concerns**
 
-#### `HUD.js`
-- **Nhiệm vụ**:
-  - Update score display
-  - Update health bar
-  - Update level display
-  - Show/hide boss icon và health bar
-- **TODO**: Implement HUD updates
+1. **Core Layer** (`core/`)
+   - `GameEngine.js` - Game loop, rendering
+   - `Camera.js` - Camera configuration
 
-### Utils
+2. **Scene Layer** (`scenes/`)
+   - `BaseScene.js` - Base class cho tất cả scenes
+   - `GameplayScene.js` - Logic gameplay chính
+   - `MainMenuScene.js`, `LoadingScene.js`, `GameOverScene.js` - UI scenes
 
-#### `Constants.js` ✅
-- **Nhiệm vụ**: Chứa tất cả constants, configs
-- **Đã implement**: Game states, asset paths, configs, scoring
+3. **Manager Layer** (`managers/`)
+   - `GameStateManager.js` - Quản lý state transitions
+   - `DataManager.js` - Lưu/load data (localStorage)
+   - `BackgroundManager.js` - Quản lý background scrolling
 
-## 💾 Hệ thống lưu dữ liệu
+4. **Helper Layer** (`helpers/`)
+   - `AnimationHelper.js` - Tạo animation effects
 
-### Data được lưu (localStorage):
+5. **UI Layer** (`ui/`)
+   - `GameplayUIManager.js` - HUD, pause menu
 
-1. **Player Data** (`PLAYER_DATA`)
-   - Total score
-   - Total games played
-   - Total kills
-   - Highest level reached
-   - Coins
-   - Ship level
-   - Upgrades (damage, speed, health, fire rate levels)
+6. **Utils Layer** (`utils/`)
+   - `Constants.js` - Game configuration, constants
 
-2. **Settings** (`SETTINGS`)
-   - Volume
-   - Music volume
-   - Difficulty
-   - Language
-   - Show FPS
+## 🎨 Three.js Features Được Sử Dụng
 
-3. **High Score** (`HIGH_SCORE`)
-   - Single number (highest score ever)
+| Feature | Mục Đích | File |
+|---------|----------|------|
+| `THREE.Scene` | Quản lý object hierarchy | `GameEngine.js` |
+| `THREE.PerspectiveCamera` | Góc nhìn game | `Camera.js` |
+| `THREE.WebGLRenderer` | Render lên canvas | `GameEngine.js` |
+| `THREE.Mesh` | Game objects | Tất cả scenes |
+| `THREE.PlaneGeometry` | 2D sprites | Tất cả objects |
+| `THREE.MeshBasicMaterial` | Material cho sprites | Tất cả objects |
+| `THREE.TextureLoader` | Load PNG textures | `GameplayScene.js`, `AnimationHelper.js` |
+| `THREE.Vector2/3` | Math calculations | Collision, movement |
+| `renderOrder` | Z-ordering | Đảm bảo rendering đúng thứ tự |
 
-4. **Unlocked Levels** (`UNLOCKED_LEVELS`)
-   - Array of level numbers [1, 2, 3...]
+## 🔧 Tối Ưu Hóa
 
-5. **Purchased Items** (`PURCHASED_ITEMS`)
-   - Array of item IDs ['ship_upgrade', 'remove_ads'...]
+1. **Texture Caching**: Cache tất cả textures để tránh load lại
+2. **Object Pooling**: Có thể mở rộng để reuse objects
+3. **Render Order**: Sử dụng `renderOrder` để tối ưu rendering
+4. **Delta Time**: Sử dụng deltaTime cho frame-rate independent movement
+5. **Geometry Reuse**: Có thể reuse geometry cho cùng loại object
 
-## 🎮 Gameplay Features
+## 📈 Performance Considerations
 
-### Player
-- Di chuyển: WASD / Arrow keys
-- Bắn: Space
-- Health system
-- Upgrades: damage, speed, health, fire rate
+- **Mesh Count**: Giới hạn số lượng mesh trên scene
+- **Texture Size**: Sử dụng texture có kích thước phù hợp
+- **Animation**: Chỉ update animations khi cần thiết
+- **Collision Detection**: Sử dụng AABB cho boss, distance-based cho enemy
 
-### Enemies
-- Spawn theo timer (tăng dần theo level)
-- Nhiều loại enemy
-- Drop items khi bị tiêu diệt
+## 🚀 Mở Rộng Tương Lai
 
-### Boss
-- Xuất hiện mỗi 5 levels
-- Health bar riêng
-- Warning icon trước khi spawn
-- Nhiều attack patterns
+- Particle System với `THREE.Points`
+- Post-processing effects với `THREE.EffectComposer`
+- 3D models với `THREE.GLTFLoader`
+- Shader effects với custom materials
+- Physics engine integration
 
-### Scoring
-- Enemy kill: 10 points
-- Boss kill: 1000 points
-- Level bonus: 100 points
-- Perfect clear: 500 points
+---
 
-### Level Progression
-- Mỗi 100 points = level up
-- Difficulty tăng theo level
-- Boss spawn mỗi 5 levels
-
-## 🖥️ UI Elements
-
-### Main Menu
-- Logo
-- Play button
-- Shop button
-- Upgrade button
-- Settings button
-
-### Level Select
-- Level cards (1-10+)
-- Lock/unlock status
-- Stars rating
-- Best score
-
-### Shop
-- Item cards
-- Price display
-- Coins counter
-- Purchase buttons
-
-### Upgrade
-- Upgrade categories
-- Current level / Max level
-- Cost display
-- Stat preview
-
-### Gameplay HUD
-- Score (top-left)
-- Health bar (bottom-left)
-- Level (top-left)
-- Boss icon (top-right, khi boss sắp spawn)
-- Boss health bar (top, khi có boss)
-- Pause button (top-right)
-
-### Game Over
-- Final score
-- Stats (level, kills, time)
-- Stars (1-3)
-- Play Again button
-- Main Menu button
-
-## 📋 Implementation Order
-
-1. ✅ **Constants.js** - Định nghĩa constants
-2. ✅ **Camera.js** - Setup camera
-3. ✅ **GameEngine.js** - Core engine
-4. ✅ **DataManager.js** - Save/load system
-5. ✅ **GameStateManager.js** - State management
-6. ✅ **BaseScene.js** - Base scene class
-7. ✅ **MainMenuScene.js** - Main menu
-8. ✅ **UIManager.js** - UI system
-9. ✅ **GameplayScene.js** - Gameplay
-10. ✅ **LevelSelectScene.js** - Level selection
-11. ✅ **ShopScene.js** - Shop
-12. ✅ **UpgradeScene.js** - Upgrades
-13. ✅ **GameOverScene.js** - Game over
-14. ⏳ **main.js** - Entry point và wiring
-
-## 📌 Notes
-
-- Tất cả files đã có structure và comments chi tiết
-- Mỗi file có TODO comments cho phần cần implement
-- Camera đã được setup hoàn chỉnh
-- Constants đã được định nghĩa đầy đủ
-- Cần implement các phần TODO để game hoạt động
+**Tài liệu này mô tả kiến trúc và cách sử dụng Three.js trong Space Shooter Game.**

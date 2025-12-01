@@ -1,12 +1,4 @@
-/**
- * ============================================
- * GAMEOVERSCENE.JS
- * ============================================
- * 
- * Scene cho Game Over / Victory
- * Hiển thị: Final score, stats, stars rating, buttons (Play Again, Main Menu)
- * Xử lý: Tính toán rating, hiển thị achievements
- */
+// Scene cho Game Over
 
 import { BaseScene } from './BaseScene.js';
 import { GameState } from '../utils/Constants.js';
@@ -16,109 +8,99 @@ export class GameOverScene extends BaseScene {
         super();
         this.gameEngine = gameEngine;
         this.gameStats = null;
+        this.gameOverElement = null;
     }
 
-    /**
-     * Khởi tạo Game Over Scene
-     * @param {object} data - { score, level, enemiesKilled, victory }
-     * TODO: Implement initialization
-     * - Hiển thị final score
-     * - Hiển thị stats (level reached, enemies killed, time played)
-     * - Tính toán và hiển thị stars (1-3)
-     * - Hiển thị "Game Over" hoặc "Victory" tùy kết quả
-     * - Hiển thị buttons: Play Again, Main Menu, Share
-     */
+    // Khởi tạo Game Over Scene
     init(scene, camera, data = {}) {
         super.init(scene, camera, data);
         
-        // TODO: Save game stats
-        // this.gameStats = {
-        //     score: data.score || 0,
-        //     level: data.level || 1,
-        //     enemiesKilled: data.enemiesKilled || 0,
-        //     victory: data.victory || false
-        // };
+        this.gameStats = {
+            score: data.score || 0,
+            enemiesKilled: data.enemiesKilled || 0,
+            waveNumber: data.waveNumber || 1
+        };
         
-        // TODO: Calculate stars rating
-        // const stars = this.calculateStars();
+        this.gameOverElement = document.getElementById('game-over-screen');
         
-        // TODO: Create game over UI
-        // this.createGameOverUI();
-        
-        // TODO: Setup event listeners
-        // this.setupEventListeners();
-        
-        // TODO: Show achievements nếu có
-        // this.checkAchievements();
+        this.createGameOverUI();
+        this.setupEventListeners();
+        this.showGameOverUI();
     }
 
-    /**
-     * Tính toán số sao (1-3)
-     * TODO: Implement star calculation
-     * Dựa trên: Score, level reached, enemies killed
-     * @returns {number} 1-3 stars
-     */
-    calculateStars() {
-        // TODO: Calculate based on performance
-        // let stars = 1;
-        // 
-        // if (this.gameStats.score > 1000) stars = 2;
-        // if (this.gameStats.score > 5000 && this.gameStats.level > 5) stars = 3;
-        // 
-        // return stars;
+    // Hiển thị Game Over UI
+    showGameOverUI() {
+        const allScreens = Array.from(document.querySelectorAll('#game-container .screen'));
+        allScreens.forEach(screen => {
+            if (screen === this.gameOverElement) {
+                screen.classList.remove('hidden');
+            } else {
+                screen.classList.add('hidden');
+            }
+        });
     }
 
-    /**
-     * Tạo UI cho game over
-     * TODO: Implement UI creation
-     */
+    // Tạo UI cho game over
     createGameOverUI() {
-        // TODO: Create UI với:
-        // - Title: "GAME OVER" hoặc "VICTORY"
-        // - Final score display
-        // - Stats display (level, kills, time)
-        // - Stars display (1-3 stars)
-        // - Buttons: Play Again, Main Menu
+        const finalScore = document.getElementById('final-score');
+        if (finalScore) {
+            finalScore.textContent = this.gameStats.score;
+        }
+        
+        const enemiesKilled = document.getElementById('enemies-killed');
+        if (enemiesKilled) {
+            enemiesKilled.textContent = this.gameStats.enemiesKilled;
+        }
+        
+        const finalLevel = document.getElementById('final-level');
+        if (finalLevel) {
+            finalLevel.textContent = `Wave ${this.gameStats.waveNumber}`;
+        }
+        
+        const gameOverTitle = document.getElementById('game-over-title');
+        if (gameOverTitle) {
+            gameOverTitle.textContent = 'GAME OVER';
+        }
+        
+        const starsRating = document.getElementById('stars-rating');
+        if (starsRating) {
+            starsRating.style.display = 'none';
+        }
     }
 
-    /**
-     * Kiểm tra achievements
-     * TODO: Implement achievement checking
-     */
-    checkAchievements() {
-        // TODO: Check various achievements:
-        // - First win
-        // - High score milestone
-        // - Perfect run (no damage)
-        // - Boss killer
-        // - etc.
-    }
-
-    /**
-     * Xử lý Play Again
-     * TODO: Implement play again
-     */
-    playAgain() {
-        // TODO: Restart gameplay với cùng level
-        // this.gameEngine.getStateManager().changeState(GameState.GAMEPLAY, {
-        //     level: this.gameStats.level
-        // });
-    }
-
-    /**
-     * Xử lý Main Menu
-     * TODO: Implement return to menu
-     */
-    goToMainMenu() {
-        // TODO: Return to main menu
-        // this.gameEngine.getStateManager().changeState(GameState.MAIN_MENU);
-    }
-
+    // Thiết lập event listeners
     setupEventListeners() {
-        // TODO: Add click listeners
+        const playAgainBtn = document.getElementById('btn-play-again');
+        const mainMenuBtn = document.getElementById('btn-main-menu');
+        
+        if (playAgainBtn) {
+            playAgainBtn.onclick = () => this.playAgain();
+        }
+        
+        if (mainMenuBtn) {
+            mainMenuBtn.onclick = () => this.goToMainMenu();
+        }
     }
 
+    // Xử lý Play Again
+    playAgain() {
+        this.gameEngine.getStateManager().changeState(GameState.GAMEPLAY);
+    }
+
+    // Xử lý Main Menu
+    goToMainMenu() {
+        this.gameEngine.getStateManager().changeState(GameState.MAIN_MENU);
+    }
+
+    // Cập nhật scene
+    update(deltaTime) {
+    }
+
+    // Dọn dẹp
     cleanup() {
+        if (this.gameOverElement) {
+            this.gameOverElement.classList.add('hidden');
+        }
         super.cleanup();
     }
 }
